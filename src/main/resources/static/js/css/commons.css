@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}

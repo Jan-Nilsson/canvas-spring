@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Canvas - Drawings App</title>
+
+    <link rel="stylesheet" href="/css/canvas.css">
+    <link rel="stylesheet" href="/css/commons.css">
+</head>
+<body>
+<header>
+    <h1>🎨 Drawings App</h1>
+
+    <div class="user-info">
+        <form action="/logout" method="post" style="display:inline;">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <aside class="sidebar">
+        <h2>Shapes</h2>
+
+        <div class="shapes">
+            <button class="shape-btn" data-shape="circle">⚪</button>
+            <button class="shape-btn" data-shape="square">⬛</button>
+            <button class="shape-btn" data-shape="triangle">🔺</button>
+            <button class="shape-btn" data-shape="star7">⭐</button>
+            <button class="shape-btn" data-shape="polygon">⬠</button>
+            <button class="shape-btn" data-shape="free">✏️</button>
+        </div>
+
+        <div class="options">
+            <label>Color:</label>
+            <input type="color" id="colorPicker" value="#000000">
+
+            <label class="switch">
+                <input type="checkbox" id="fillToggle" checked>
+                <span class="slider"></span>
+            </label>
+            <span id="fillLabel">Filled</span>
+        </div>
+
+        <h3>New Settings</h3>
+
+        <label>
+            Shape Size: <span id="shapeSizeLabel">50</span> px
+        </label>
+        <input type="range" id="shapeSize" min="10" max="300" value="50">
+
+        <label>
+            Free Draw Width: <span id="freeWidthLabel">2</span> px
+        </label>
+        <input type="range" id="freeWidth" min="1" max="20" value="2">
+
+        <label>Canvas Width:</label>
+        <input type="number" id="canvasWidth" value="800">
+
+        <label>Canvas Height:</label>
+        <input type="number" id="canvasHeight" value="600">
+
+        <button id="applyCanvasSize">Apply Canvas Size</button>
+
+        <div class="actions">
+            <button id="undoBtn">↩️ Undo</button>
+            <button id="redoBtn">↪️ Redo</button>
+            <button id="clearBtn">🗑️ Clear All</button>
+            <button id="saveBtn">💾 Save</button>
+        </div>
+    </aside>
+
+    <section class="canvas-container">
+        <canvas id="drawingCanvas"></canvas>
+    </section>
+
+    <aside class="object-history">
+        <h2>Your Objects</h2>
+        <ul id="objectList"></ul>
+    </aside>
+</main>
+
+<script src="/js/canvas.js"></script>
+</body>
+</html>
