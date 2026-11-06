@@ -1,12 +1,15 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
-    <link rel="stylesheet" href="/css/register.css">
-    <link rel="stylesheet" href="/css/commons.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link rel="stylesheet" th:href="@{/css/commons.css}">
 
     <style>
         .error-message {
@@ -20,40 +23,91 @@
 <div class="container">
     <h1>Register</h1>
 
-    <div class="error-message">
-        <!-- Error message placeholder -->
+    <!-- Validation errors -->
+    <div class="error-message"
+         th:if="${invalidFullName}"
+         th:text="${invalidFullName}">
     </div>
 
-    <form id="registerForm" method="post" action="/register">
+    <div class="error-message"
+         th:if="${invalidUsername}"
+         th:text="${invalidUsername}">
+    </div>
+
+    <div class="error-message"
+         th:if="${usernameAlreadyExists}"
+         th:text="${usernameAlreadyExists}">
+    </div>
+
+    <div class="error-message"
+         th:if="${bannedWordMessage}"
+         th:text="${bannedWordMessage}">
+    </div>
+
+    <div class="error-message"
+         th:if="${reservedUsernameMessage}"
+         th:text="${reservedUsernameMessage}">
+    </div>
+
+    <div class="error-message"
+         th:if="${invalidPassword}"
+         th:text="${invalidPassword}">
+    </div>
+
+    <div class="error-message"
+         th:if="${passwordMismatch}"
+         th:text="${passwordMismatch}">
+    </div>
+
+    <form id="registerForm" method="post" th:action="@{/register}">
 
         <div class="input-wrapper">
-            <input id="regFullName" type="text" name="fullName"
-                   placeholder="Full Name" required>
+            <label for="regFullName">Full Name</label>
+            <input id="regFullName"
+                   type="text"
+                   name="fullName"
+                   placeholder="Full Name"
+                   th:value="${fullName}"
+                   required>
         </div>
 
         <div class="input-wrapper">
-            <input id="regUsername" type="text" name="username"
-                   placeholder="Username" required>
+            <label for="regUsername">Username</label>
+            <input id="regUsername"
+                   type="text"
+                   name="username"
+                   placeholder="Username"
+                   th:value="${username}"
+                   required>
         </div>
 
         <div class="input-wrapper">
-            <input id="regPassword" type="password" name="password"
-                   placeholder="Password" required>
+            <label for="regPassword">Password</label>
+            <input id="regPassword"
+                   type="password"
+                   name="password"
+                   placeholder="Password"
+                   required>
         </div>
 
         <div class="input-wrapper">
-            <input id="regConfirm" type="password" name="confirmPassword"
-                   placeholder="Confirm Password" required>
+            <label for="regConfirm">Confirm Password</label>
+            <input id="regConfirm"
+                   type="password"
+                   name="confirmPassword"
+                   placeholder="Confirm Password"
+                   required>
         </div>
 
         <button type="submit">Create Account</button>
     </form>
 
-    <p>Already have an account?
-        <a href="/login">Log In</a>
+    <p>
+        Already have an account?
+        <a th:href="@{/login}">Log In</a>
     </p>
 </div>
 
-<script src="/js/register.js"></script>
+<script th:src="@{/js/register.js}"></script>
 </body>
 </html>
