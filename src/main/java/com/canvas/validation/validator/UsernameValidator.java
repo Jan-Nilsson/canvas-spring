@@ -5,19 +5,20 @@ import com.canvas.validation.validator.rules.UsernameRules;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.Objects;
 
 @Component
 public class UsernameValidator {
 
     public boolean hasValidLength(String username) {
-        return username != null
+        return Objects.nonNull(username)
                 && username.length() >= UsernameRules.MIN_LENGTH
                 && username.length() <= UsernameRules.MAX_LENGTH;
     }
 
     public boolean hasValidCharacters(String username) {
-        return username != null
-                && username.matches("^[a-zA-Z0-9_-]+$");
+        return Objects.nonNull(username)
+                && UsernameRules.USERNAME_PATTERN.matcher(username).matches();
     }
 
     public boolean isValidFormat(String username) {
@@ -26,7 +27,7 @@ public class UsernameValidator {
     }
 
     public boolean containsBannedWord(String username) {
-        if (username == null) {
+        if (Objects.isNull(username)) {
             return false;
         }
 

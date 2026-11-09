@@ -43,7 +43,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     ctx.beginPath();
                     ctx.arc(obj.x, obj.y, obj.size/2, 0, Math.PI*2);
                     if(obj.filled) ctx.fill();
-                    else ctx.stroke();
+                    ctx.stroke();
                     break;
             }
         });

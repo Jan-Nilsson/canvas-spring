@@ -1,44 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Canvas - Drawings App</title>
 
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
-
-    <link rel="stylesheet" href="/css/canvas.css">
-    <link rel="stylesheet" href="/css/commons.css">
+    <link rel="stylesheet" th:href="@{/css/canvas.css}">
+    <link rel="stylesheet" th:href="@{/css/commons.css}">
 </head>
 <body>
+
 <header>
     <h1>🎨 Drawings App</h1>
 
     <div class="user-info">
-        <form action="/logout" method="post" style="display:inline;">
+        <form th:action="@{/logout}" method="post">
             <button type="submit">Logout</button>
         </form>
     </div>
 </header>
+
+<!-- In-app messages. The backend can fill data-initial-message
+     (e.g. th:attr="data-initial-message=${message},data-initial-type=${messageType}") -->
+<div id="appMessage" class="app-message" role="status" aria-live="polite" hidden></div>
 
 <main>
     <aside class="sidebar">
         <h2>Shapes</h2>
 
         <div class="shapes">
-            <button class="shape-btn" data-shape="circle">⚪</button>
-            <button class="shape-btn" data-shape="square">⬛</button>
-            <button class="shape-btn" data-shape="triangle">🔺</button>
-            <button class="shape-btn" data-shape="star7">⭐</button>
-            <button class="shape-btn" data-shape="polygon">⬠</button>
-            <button class="shape-btn" data-shape="free">✏️</button>
+            <button type="button" class="shape-btn"
+                    data-shape="circle" aria-label="Circle">⚪</button>
+            <button type="button" class="shape-btn"
+                    data-shape="square" aria-label="Square">⬛</button>
+            <button type="button" class="shape-btn"
+                    data-shape="triangle" aria-label="Triangle">🔺</button>
+            <button type="button" class="shape-btn"
+                    data-shape="star7" aria-label="Star">⭐</button>
+            <button type="button" class="shape-btn"
+                    data-shape="polygon" aria-label="Polygon">⬠</button>
+            <button type="button" class="shape-btn"
+                    data-shape="free" aria-label="Free drawing">✏️</button>
+        </div>
+
+        <div id="polygonOptions" hidden>
+            <label for="polygonSides">Polygon sides:</label>
+            <input type="number" id="polygonSides" value="5" min="3" max="50" step="1">
         </div>
 
         <div class="options">
-            <label>Color:</label>
+            <label for="colorPicker">Color:</label>
             <input type="color" id="colorPicker" value="#000000">
 
-            <label class="switch">
+            <label class="switch" for="fillToggle">
                 <input type="checkbox" id="fillToggle" checked>
                 <span class="slider"></span>
             </label>
@@ -47,34 +62,62 @@
 
         <h3>New Settings</h3>
 
-        <label>
+        <label for="shapeSize">
             Shape Size: <span id="shapeSizeLabel">50</span> px
         </label>
         <input type="range" id="shapeSize" min="10" max="300" value="50">
 
-        <label>
+        <label for="freeWidth">
             Free Draw Width: <span id="freeWidthLabel">2</span> px
         </label>
         <input type="range" id="freeWidth" min="1" max="20" value="2">
 
-        <label>Canvas Width:</label>
-        <input type="number" id="canvasWidth" value="800">
+        <label for="canvasWidth">Canvas Width (px):</label>
+        <input type="number" id="canvasWidth" value="800" min="100" max="4000" step="1">
 
-        <label>Canvas Height:</label>
-        <input type="number" id="canvasHeight" value="600">
+        <label for="canvasHeight">Canvas Height (px):</label>
+        <input type="number" id="canvasHeight" value="600" min="100" max="4000" step="1">
 
-        <button id="applyCanvasSize">Apply Canvas Size</button>
+        <small class="hint">Press Enter or click outside to apply (100–4000 px).</small>
+
+        <button type="button" id="resetCanvasSize">Default size (800×600)</button>
 
         <div class="actions">
-            <button id="undoBtn">↩️ Undo</button>
-            <button id="redoBtn">↪️ Redo</button>
-            <button id="clearBtn">🗑️ Clear All</button>
-            <button id="saveBtn">💾 Save</button>
+            <button type="button" id="undoBtn">↩️ Undo</button>
+            <button type="button" id="redoBtn">↪️ Redo</button>
+            <button type="button" id="clearBtn">🗑️ Clear All</button>
+
+            <form id="saveForm" th:action="@{/canvas/save}" method="post" novalidate>
+                <label for="drawingName">Drawing name:</label>
+                <input type="text"
+                       id="drawingName"
+                       name="drawingName"
+                       placeholder="My drawing">
+
+                <input type="hidden" id="drawingData" name="drawingData">
+
+                <button type="submit" id="saveBtn">💾 Save</button>
+            </form>
         </div>
     </aside>
 
-    <section class="canvas-container">
-        <canvas id="drawingCanvas"></canvas>
+    <section class="canvas-area">
+        <div class="zoom-bar" role="group" aria-label="Zoom">
+            <button type="button" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">−</button>
+            <span id="zoomLabel" class="zoom-label">100%</span>
+            <button type="button" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
+            <button type="button" id="zoomResetBtn" title="Actual size">100%</button>
+            <button type="button" id="zoomFitBtn" title="Fit to window">Fit</button>
+            <small class="hint">Ctrl + mouse wheel to zoom</small>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer">
+            <div class="canvas-frame">
+                <canvas id="drawingCanvas" width="800" height="600">
+                    Your browser does not support the canvas element.
+                </canvas>
+            </div>
+        </div>
     </section>
 
     <aside class="object-history">
@@ -83,6 +126,6 @@
     </aside>
 </main>
 
-<script src="/js/canvas.js"></script>
+<script th:src="@{/js/canvas.js}"></script>
 </body>
 </html>
