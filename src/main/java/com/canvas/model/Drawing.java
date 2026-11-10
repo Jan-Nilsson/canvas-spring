@@ -1,14 +1,16 @@
 package com.canvas.model;
 
 public class Drawing {
-    private final long id;
+    private final Long id;
     private String drawingName;
-    private String author;
+    private final Long authorId;
+    private boolean visible;
 
-    public Drawing(Long id, String drawingName, String author) {
+    public Drawing(Long id, String drawingName, Long authorId, boolean visible) {
         this.id = id;
         this.drawingName = drawingName;
-        this.author = author;
+        this.authorId = authorId;
+        this.visible = visible;
     }
 
     public Long getId() {
@@ -23,11 +25,15 @@ public class Drawing {
         this.drawingName = drawingName;
     }
 
-    public String getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.canvas.controller;
 
 import com.canvas.service.UserService;
@@ -39,8 +38,7 @@ public class RegisterController {
         );
 
         if (userId.isPresent()) {
-            session.setAttribute("userId", userId.get());
-            return "redirect:/canvas";
+            return "redirect:/login";
         }
 
         if (!userService.isValidFullName(fullName)) {

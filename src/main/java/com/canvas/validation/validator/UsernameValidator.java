@@ -2,6 +2,9 @@
 package com.canvas.validation.validator;
 
 import com.canvas.validation.validator.rules.UsernameRules;
+import com.canvas.validation.validator.rules.common.BannedWords;
+import com.canvas.validation.validator.rules.common.InternationalNamePattern;
+import com.canvas.validation.validator.rules.common.TextNormalizer;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -18,7 +21,7 @@ public class UsernameValidator {
 
     public boolean hasValidCharacters(String username) {
         return Objects.nonNull(username)
-                && UsernameRules.USERNAME_PATTERN.matcher(username).matches();
+                && InternationalNamePattern.INTERNATIONAL_PATTERN.matcher(username).matches();
     }
 
     public boolean isValidFormat(String username) {
@@ -27,13 +30,13 @@ public class UsernameValidator {
     }
 
     public boolean containsBannedWord(String username) {
-        if (Objects.isNull(username)) {
+        if (username == null) {
             return false;
         }
 
-        String normalized = normalizeForModeration(username);
+        String normalized = TextNormalizer.normalizeForModeration(username);
 
-        return UsernameRules.BANNED_WORDS.stream()
+        return BannedWords.WORDS.stream()
                 .anyMatch(normalized::contains);
     }
 
@@ -42,16 +45,6 @@ public class UsernameValidator {
                 && UsernameRules.RESERVED_NAMES.contains(
                 username.toLowerCase(Locale.ROOT)
         );
-    }
-
-    private String normalizeForModeration(String username) {
-        return username.toLowerCase(Locale.ROOT)
-                .replace('1', 'i')
-                .replace('3', 'e')
-                .replace('4', 'a')
-                .replace('5', 's')
-                .replace('0', 'o')
-                .replace('7', 't');
     }
 
     public boolean isValid(String username) {

@@ -1,10 +1,11 @@
 package com.canvas.repository;
 
 import com.canvas.model.Drawing;
-import com.canvas.model.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class DrawingRepositoryMemory implements DrawingRepository {
 
     private final Map<Long, Drawing> drawings = new HashMap<>();
@@ -12,11 +13,11 @@ public class DrawingRepositoryMemory implements DrawingRepository {
 
     @Override
     public List<Drawing> findByNameSearch(String drawingNameSearch) {
-        if (Objects.isNull(drawingNameSearch) || drawingNameSearch.isBlank()) {
+        if (drawingNameSearch == null || drawingNameSearch.isBlank()) {
             return List.of();
         }
 
-        String search = drawingNameSearch.trim().toLowerCase();
+        String search = drawingNameSearch.trim().toLowerCase(Locale.ROOT);
 
         return drawings.values().stream()
                 .filter(drawing -> drawing.getDrawingName()
@@ -31,11 +32,22 @@ public class DrawingRepositoryMemory implements DrawingRepository {
     }
 
     @Override
-    public Drawing save(String drawingName, String author) {
-        Drawing drawing = new Drawing(nextId++, drawingName, author);
+    public Drawing save(Drawing drawing) {
+        if (drawing.getId() == null) {
+            drawing = new Drawing(
+                    nextId++,
+                    drawing.getDrawingName(),
+                    drawing.getAuthorId(),
+                    drawing.isVisible()
+            );
+        }
 
         drawings.put(drawing.getId(), drawing);
-
         return drawing;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        drawings.remove(id);
     }
 }

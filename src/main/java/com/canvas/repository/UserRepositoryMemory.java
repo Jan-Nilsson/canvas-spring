@@ -35,4 +35,9 @@ public class UserRepositoryMemory implements UserRepository {
         return users.values().stream()
                 .anyMatch(user -> user.getUsername().equalsIgnoreCase(username));
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(users.get(id));
+    }
 }
