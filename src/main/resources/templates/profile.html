@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#17243a">
+
+    <title th:text="${(profile.displayName != null and !#strings.isEmpty(profile.displayName) ? profile.displayName : profile.username) + ' - Drawings App'}">
+        Profile - Drawings App
+    </title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/commons.css}">
+    <link rel="stylesheet" th:href="@{/css/app-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css(v=${#dates.createNow().time})}">
+</head>
+
+<body class="profile-page">
+
+<header th:replace="~{fragments/navbar :: navbar('profile')}"></header>
+
+<main class="profile-main">
+
+    <section class="profile-cover" aria-label="Profile banner">
+        <div class="cover-decoration cover-decoration-one"></div>
+        <div class="cover-decoration cover-decoration-two"></div>
+        <div class="cover-decoration cover-decoration-three"></div>
+    </section>
+
+
+    <section class="profile-summary-card">
+
+        <div class="profile-summary-main">
+
+            <div class="profile-avatar profile-avatar-large">
+
+                <img th:if="${profile.profileImageUrl != null and !#strings.isEmpty(profile.profileImageUrl)}"
+                     th:src="${profile.profileImageUrl}"
+                     alt="Profile picture"
+                     class="profile-avatar-image">
+
+                <svg th:unless="${profile.profileImageUrl != null and !#strings.isEmpty(profile.profileImageUrl)}"
+                     viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <circle cx="12" cy="8" r="3.5"></circle>
+                    <path d="M4.8 20c.7-3.6 3.3-5.4 7.2-5.4s6.5 1.8 7.2 5.4"></path>
+                </svg>
+
+            </div>
+
+
+            <div class="profile-identity">
+
+                <span class="profile-eyebrow">CREATOR PROFILE</span>
+
+                <h1 th:text="${profile.displayName != null and !#strings.isEmpty(profile.displayName) ? profile.displayName : profile.username}">
+                    Display name
+                </h1>
+
+                <p class="profile-username"
+                   th:text="${'@' + profile.username}">
+                    @username
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a th:if="${isOwnProfile}"
+           class="profile-edit-link"
+           th:href="@{/profile/edit}">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 20h9"></path>
+                <path d="m16.5 3.5 4 4L9 19l-5 1 1-5Z"></path>
+            </svg>
+
+            Edit profile
+        </a>
+
+    </section>
+
+
+    <section class="profile-bio-section">
+
+        <div class="profile-bio-copy">
+
+            <h2>About</h2>
+
+            <p th:if="${profile.bio != null and !#strings.isEmpty(profile.bio)}"
+               th:text="${profile.bio}">
+                Profile biography
+            </p>
+
+            <p th:unless="${profile.bio != null and !#strings.isEmpty(profile.bio)}"
+               class="profile-empty-bio">
+                This creator hasn't added a biography yet.
+            </p>
+
+        </div>
+
+
+        <div class="profile-stat">
+            <strong th:text="${#lists.size(drawings)}">0</strong>
+            <span>Public drawings</span>
+        </div>
+
+    </section>
+
+
+    <section class="profile-drawings-section">
+
+        <div class="profile-section-heading">
+            <div>
+                <span class="profile-eyebrow">PORTFOLIO</span>
+                <h2>Public drawings</h2>
+            </div>
+        </div>
+
+
+        <div class="profile-drawing-grid"
+             th:if="${!#lists.isEmpty(drawings)}">
+
+            <article class="profile-drawing-card"
+                     th:each="drawing : ${drawings}">
+
+                <a class="profile-drawing-preview"
+                   th:href="@{/drawings/{id}(id=${drawing.id})}"
+                   th:aria-label="${'Open ' + drawing.drawingName}">
+
+                    <img th:if="${drawing.previewImage != null and !#strings.isEmpty(drawing.previewImage)}"
+                         th:src="${drawing.previewImage}"
+                         th:alt="${drawing.drawingName}"
+                         loading="lazy">
+
+                    <div th:unless="${drawing.previewImage != null and !#strings.isEmpty(drawing.previewImage)}"
+                         class="profile-preview-placeholder"
+                         aria-hidden="true">
+
+                        <span></span>
+                        <i></i>
+                        <b></b>
+
+                    </div>
+
+                </a>
+
+
+                <div class="profile-drawing-info">
+                    <a th:href="@{/drawings/{id}(id=${drawing.id})}"
+                       th:text="${drawing.drawingName}">
+                        Drawing name
+                    </a>
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="profile-no-drawings"
+             th:if="${#lists.isEmpty(drawings)}">
+
+            <div class="profile-empty-icon" aria-hidden="true">✦</div>
+
+            <h3>No public drawings yet</h3>
+
+            <p th:if="${isOwnProfile}">
+                When you publish a drawing, it will appear here.
+            </p>
+
+            <p th:unless="${isOwnProfile}">
+                This creator hasn't published any drawings yet.
+            </p>
+
+            <a th:if="${isOwnProfile}"
+               class="profile-primary-button"
+               th:href="@{/drawings(tab='mine')}">
+                Go to My Drawings
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script th:src="@{/js/navbar.js(v=${#dates.createNow().time})}" defer></script>
+
+</body>
+</html>

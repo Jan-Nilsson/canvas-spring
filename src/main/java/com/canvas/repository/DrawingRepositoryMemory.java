@@ -12,6 +12,11 @@ public class DrawingRepositoryMemory implements DrawingRepository {
     private long nextId = 1;
 
     @Override
+    public List<Drawing> findAll() {
+        return new ArrayList<>(drawings.values());
+    }
+
+    @Override
     public List<Drawing> findByNameSearch(String drawingNameSearch) {
         if (drawingNameSearch == null || drawingNameSearch.isBlank()) {
             return List.of();

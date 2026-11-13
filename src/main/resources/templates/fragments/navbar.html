@@ -1,0 +1,151 @@
+<header th:fragment="navbar(activePage)" class="site-navbar">
+
+    <a class="site-brand"
+       th:href="@{/drawings(tab='all')}"
+       aria-label="Drawings App home">
+
+        <span class="site-brand-icon">
+            <img th:src="@{/favicon.ico}" alt="">
+        </span>
+
+        <span class="site-brand-copy">
+            <strong>Drawings</strong>
+            <small>Canvas Studio</small>
+        </span>
+    </a>
+
+
+    <nav class="site-navigation" aria-label="Main navigation">
+
+        <a th:href="@{/drawings(tab='all')}"
+           th:classappend="${activePage == 'explore'} ? ' is-active' : ''"
+           th:attr="aria-current=${activePage == 'explore'} ? 'page' : null">
+            Explore
+        </a>
+
+        <a th:href="@{/drawings(tab='mine')}"
+           th:classappend="${activePage == 'mine'} ? ' is-active' : ''"
+           th:attr="aria-current=${activePage == 'mine'} ? 'page' : null">
+            My Drawings
+        </a>
+
+    </nav>
+
+
+    <div class="navbar-account" data-profile-menu>
+
+        <button type="button"
+                id="profileMenuButton"
+                class="profile-menu-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="profileMenu">
+
+            <span class="navbar-avatar">
+
+                <img th:if="${currentUser != null and !#strings.isEmpty(currentUser.profileImageUrl)}"
+                     th:src="${currentUser.profileImageUrl}"
+                     alt=""
+                     class="navbar-avatar-image">
+
+                <svg th:unless="${currentUser != null and !#strings.isEmpty(currentUser.profileImageUrl)}"
+                     viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <circle cx="12" cy="8" r="3.5"></circle>
+                    <path d="M4.8 20c.7-3.6 3.3-5.4 7.2-5.4s6.5 1.8 7.2 5.4"></path>
+                </svg>
+
+            </span>
+
+
+            <span class="profile-trigger-copy">
+                <strong th:text="${currentUser != null and !#strings.isEmpty(currentUser.displayName) ? currentUser.displayName : (currentUser != null ? currentUser.username : 'Account')}">
+                    Account
+                </strong>
+
+                <small th:if="${currentUser != null}"
+                       th:text="${'@' + currentUser.username}">
+                    @username
+                </small>
+            </span>
+
+
+            <svg class="profile-chevron"
+                 viewBox="0 0 20 20"
+                 aria-hidden="true">
+                <path d="m5 7.5 5 5 5-5"></path>
+            </svg>
+
+        </button>
+
+
+        <div id="profileMenu"
+             class="profile-dropdown"
+             role="menu"
+             hidden>
+
+            <div class="profile-dropdown-heading">
+
+                <span class="dropdown-user-name"
+                      th:text="${currentUser != null and !#strings.isEmpty(currentUser.displayName) ? currentUser.displayName : (currentUser != null ? currentUser.username : 'Account')}">
+                    Account
+                </span>
+
+                <span class="dropdown-user-handle"
+                      th:if="${currentUser != null}"
+                      th:text="${'@' + currentUser.username}">
+                    @username
+                </span>
+
+            </div>
+
+
+            <a role="menuitem"
+               th:if="${currentUser != null}"
+               th:href="@{/profile/{username}(username=${currentUser.username})}">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="8" r="3.5"></circle>
+                    <path d="M4.8 20c.7-3.6 3.3-5.4 7.2-5.4s6.5 1.8 7.2 5.4"></path>
+                </svg>
+
+                View profile
+            </a>
+
+
+            <a role="menuitem" th:href="@{/profile/edit}">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 20h9"></path>
+                    <path d="m16.5 3.5 4 4L9 19l-5 1 1-5Z"></path>
+                </svg>
+
+                Edit profile
+            </a>
+
+
+            <div class="profile-dropdown-divider"></div>
+
+
+            <form th:action="@{/logout}" method="post">
+
+                <button type="submit"
+                        role="menuitem"
+                        class="dropdown-logout">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M10 17l5-5-5-5"></path>
+                        <path d="M15 12H3"></path>
+                        <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"></path>
+                    </svg>
+
+                    Log out
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</header>

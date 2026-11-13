@@ -1,51 +1,35 @@
-window.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".drawing-card");
-    cards.forEach(card => {
-        const canvas = card.querySelector("canvas");
-        const ctx = canvas.getContext("2d");
-        const data = JSON.parse(canvas.dataset.data);
 
-        data.forEach(obj => {
-            ctx.strokeStyle = obj.color;
-            ctx.fillStyle = obj.color;
-            ctx.lineWidth = obj.lineWidth || 2;
-            switch(obj.type){
-                case "circle":
-                    ctx.beginPath();
-                    ctx.arc(obj.x, obj.y, obj.size/2, 0, Math.PI*2);
-                    if(obj.filled) ctx.fill();
-                    ctx.stroke();
-                    break;
-                case "square":
-                    ctx.beginPath();
-                    ctx.rect(obj.x, obj.y, obj.size, obj.size);
-                    if(obj.filled) ctx.fill();
-                    ctx.stroke();
-                    break;
-                case "triangle":
-                    ctx.beginPath();
-                    ctx.moveTo(obj.x,obj.y);
-                    ctx.lineTo(obj.x+obj.size,obj.y);
-                    ctx.lineTo(obj.x+obj.size/2,obj.y-obj.size);
-                    ctx.closePath();
-                    if(obj.filled) ctx.fill();
-                    ctx.stroke();
-                    break;
-                case "free":
-                    ctx.beginPath();
-                    obj.path.forEach((p,i)=>{
-                        if(i===0) ctx.moveTo(p.x,p.y);
-                        else ctx.lineTo(p.x,p.y);
-                    });
-                    ctx.stroke();
-                    break;
-                case "dot":
-                    ctx.beginPath();
-                    ctx.arc(obj.x, obj.y, obj.size/2, 0, Math.PI*2);
-                    if(obj.filled) ctx.fill();
-                    ctx.stroke();
-                    break;
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteForms = document.querySelectorAll("[data-confirm-delete]");
+
+    deleteForms.forEach(form => {
+        form.addEventListener("submit", event => {
+            const confirmed = window.confirm(
+                "Are you sure you want to delete this drawing?"
+            );
+
+            if (!confirmed) {
+                event.preventDefault();
             }
         });
     });
+
+    const createForm = document.querySelector("#create-drawing-form");
+
+    if (createForm) {
+        createForm.addEventListener("submit", event => {
+            const nameInput = document.querySelector("#drawingName");
+            const errorMessage = document.querySelector("#create-error");
+
+            if (nameInput.value.trim().length === 0) {
+                event.preventDefault();
+                errorMessage.textContent = "Drawing name cannot be empty.";
+                nameInput.focus();
+                return;
+            }
+
+            errorMessage.textContent = "";
+            nameInput.value = nameInput.value.trim();
+        });
+    }
 });

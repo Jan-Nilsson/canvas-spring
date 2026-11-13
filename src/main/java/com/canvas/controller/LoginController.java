@@ -33,6 +33,7 @@ public class LoginController {
         Optional<Long> userId = loginService.checkLogin(username, password);
 
         if (username.equals("admin") && password.equals("admin")) {
+            session.setAttribute("userId", userId);
             return "redirect:/canvas";
         }
 

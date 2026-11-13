@@ -1,39 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Drawings</title>
+    <meta name="theme-color" content="#17243a">
+
+    <title>Drawings - Drawings App</title>
 
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 
-    <link rel="stylesheet" href="/css/drawings.css">
+    <link rel="stylesheet" th:href="@{/css/commons.css}">
+    <link rel="stylesheet" th:href="@{/css/app-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/drawings.css(v=${#dates.createNow().time})}">
 </head>
-<body>
-<header>
-    <h1>My Drawings</h1>
-</header>
 
-<main>
-    <section class="gallery">
+<body class="drawings-page"
+      th:with="currentTab=${tab == null ? 'mine' : tab},
+               navPage=${tab == 'all' ? 'explore' : 'mine'}">
 
-        <!-- Drawing card placeholder -->
-        <div class="drawing-card">
-            <canvas data-data=""></canvas>
+<header th:replace="~{fragments/navbar :: navbar(${navPage})}"></header>
 
-            <div class="info">
-                <span class="name">Drawing name</span>
-                <span class="date">2026-11-04 19:00</span>
-                <span class="user">By: username</span>
-            </div>
+<main class="drawings-main">
+
+    <section class="drawings-heading">
+
+        <div>
+            <span class="page-eyebrow"
+                  th:text="${currentTab == 'mine' ? 'YOUR WORKSPACE' : 'COMMUNITY GALLERY'}">
+                YOUR WORKSPACE
+            </span>
+
+            <h1 th:text="${currentTab == 'mine' ? 'My Drawings' : 'Explore'}">
+                My Drawings
+            </h1>
+
+            <p th:if="${currentTab == 'mine'}">
+                Your collection of public and private drawings.
+            </p>
+
+            <p th:if="${currentTab == 'all'}">
+                Discover public drawings created by the community.
+            </p>
         </div>
 
-        <!-- Empty state placeholder -->
-        <p>No drawings yet.</p>
+        <a class="primary-action" th:href="@{/canvas}">
+            <span aria-hidden="true">＋</span>
+            New drawing
+        </a>
 
     </section>
+
+
+    <nav class="drawings-tabs" aria-label="Drawing collections">
+
+        <a th:href="@{/drawings(tab='mine')}"
+           th:classappend="${currentTab == 'mine'} ? ' is-active' : ''"
+           th:attr="aria-current=${currentTab == 'mine'} ? 'page' : null">
+            My Drawings
+        </a>
+
+        <a th:href="@{/drawings(tab='all')}"
+           th:classappend="${currentTab == 'all'} ? ' is-active' : ''"
+           th:attr="aria-current=${currentTab == 'all'} ? 'page' : null">
+            Explore
+        </a>
+
+    </nav>
+
+
+    <section class="drawings-controls" aria-label="Search drawings">
+
+        <form class="drawing-search-form"
+              method="get"
+              th:action="@{/drawings}">
+
+            <input type="hidden" name="tab" th:value="${currentTab}">
+
+            <label class="search-input-wrap" for="drawingSearch">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+
+                <input id="drawingSearch"
+                       type="search"
+                       name="search"
+                       placeholder="Search drawings..."
+                       th:value="${search}">
+
+            </label>
+
+            <button type="submit" class="search-button">
+                Search
+            </button>
+
+            <a class="clear-search-link"
+               th:if="${search != null and !#strings.isEmpty(search)}"
+               th:href="@{/drawings(tab=${currentTab})}">
+                Clear
+            </a>
+
+        </form>
+
+    </section>
+
+
+    <section class="drawing-grid" aria-label="Drawings">
+
+        <article class="drawing-card" th:each="drawing : ${drawings}">
+
+            <a class="drawing-preview"
+               th:href="@{/drawings/{id}(id=${drawing.id})}"
+               th:aria-label="${'Open ' + drawing.drawingName}">
+
+                <img th:if="${drawing.previewImage != null and !#strings.isEmpty(drawing.previewImage)}"
+                     th:src="${drawing.previewImage}"
+                     th:alt="${drawing.drawingName}"
+                     loading="lazy">
+
+                <div th:unless="${drawing.previewImage != null and !#strings.isEmpty(drawing.previewImage)}"
+                     class="drawing-preview-placeholder"
+                     aria-hidden="true">
+
+                    <span class="placeholder-circle"></span>
+                    <span class="placeholder-square"></span>
+                    <span class="placeholder-triangle"></span>
+
+                </div>
+
+            </a>
+
+
+            <div class="drawing-card-info">
+
+                <div class="drawing-card-title-row">
+
+                    <a class="drawing-title"
+                       th:href="@{/drawings/{id}(id=${drawing.id})}"
+                       th:text="${drawing.drawingName}">
+                        Untitled drawing
+                    </a>
+
+                    <span th:if="${currentTab == 'mine' and drawing.visible}"
+                          class="visibility-label public-label">
+                        Public
+                    </span>
+
+                    <span th:if="${currentTab == 'mine' and !drawing.visible}"
+                          class="visibility-label private-label">
+                        Private
+                    </span>
+
+                </div>
+
+                <span class="drawing-card-subtitle"
+                      th:text="${currentTab == 'mine' ? 'Your drawing' : 'Community drawing'}">
+                    Your drawing
+                </span>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <section class="drawings-empty-state"
+             th:if="${#lists.isEmpty(drawings)}">
+
+        <div class="empty-state-icon" aria-hidden="true">✦</div>
+
+        <h2 th:if="${search != null and !#strings.isEmpty(search)}">
+            No drawings found
+        </h2>
+
+        <h2 th:unless="${search != null and !#strings.isEmpty(search)}"
+            th:text="${currentTab == 'mine' ? 'Your collection is waiting' : 'Nothing to explore yet'}">
+            Your collection is waiting
+        </h2>
+
+        <p th:if="${search != null and !#strings.isEmpty(search)}">
+            Try another search term or clear your search.
+        </p>
+
+        <p th:if="${currentTab == 'mine' and (search == null or #strings.isEmpty(search))}">
+            Create your first drawing and it will appear here.
+        </p>
+
+        <p th:if="${currentTab == 'all' and (search == null or #strings.isEmpty(search))}">
+            Public drawings from the community will appear here.
+        </p>
+
+        <a th:if="${currentTab == 'mine'}"
+           class="primary-action"
+           th:href="@{/canvas}">
+            Create a drawing
+        </a>
+
+    </section>
+
 </main>
 
-<script src="/js/drawings.js"></script>
+<script th:src="@{/js/navbar.js(v=${#dates.createNow().time})}" defer></script>
+
 </body>
 </html>

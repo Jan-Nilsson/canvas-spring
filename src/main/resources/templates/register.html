@@ -1,113 +1,244 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <meta name="theme-color" content="#17243a">
+
+    <title>Register - Drawings App</title>
 
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 
-    <link rel="stylesheet" th:href="@{/css/register.css}">
     <link rel="stylesheet" th:href="@{/css/commons.css}">
-
-    <style>
-        .error-message {
-            color: red;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css(v=${#dates.createNow().time})}">
 </head>
-<body>
-<div class="container">
-    <h1>Register</h1>
 
-    <!-- Validation errors -->
-    <div class="error-message"
-         th:if="${invalidFullName}"
-         th:text="${invalidFullName}">
-    </div>
+<body class="auth-page">
 
-    <div class="error-message"
-         th:if="${invalidUsername}"
-         th:text="${invalidUsername}">
-    </div>
+<main class="auth-layout">
 
-    <div class="error-message"
-         th:if="${usernameAlreadyExists}"
-         th:text="${usernameAlreadyExists}">
-    </div>
+    <section class="auth-brand-panel">
 
-    <div class="error-message"
-         th:if="${bannedWordMessage}"
-         th:text="${bannedWordMessage}">
-    </div>
+        <div class="auth-brand">
+            <img
+                    class="auth-brand-icon"
+                    th:src="@{/favicon.ico}"
+                    alt="">
 
-    <div class="error-message"
-         th:if="${reservedUsernameMessage}"
-         th:text="${reservedUsernameMessage}">
-    </div>
-
-    <div class="error-message"
-         th:if="${invalidPassword}"
-         th:text="${invalidPassword}">
-    </div>
-
-    <div class="error-message"
-         th:if="${passwordMismatch}"
-         th:text="${passwordMismatch}">
-    </div>
-
-    <form id="registerForm" method="post" th:action="@{/register}">
-
-        <div class="input-wrapper">
-            <label for="regFullName">Full Name</label>
-            <input id="regFullName"
-                   type="text"
-                   name="fullName"
-                   placeholder="Full Name"
-                   th:value="${fullName}"
-                   required>
+            <div class="auth-brand-copy">
+                <strong>Drawings App</strong>
+                <span>Canvas Studio</span>
+            </div>
         </div>
 
-        <div class="input-wrapper">
-            <label for="regUsername">Username</label>
-            <input id="regUsername"
-                   type="text"
-                   name="username"
-                   placeholder="Username"
-                   th:value="${username}"
-                   required>
+        <div class="auth-brand-message">
+            <span class="auth-overline">START CREATING</span>
+
+            <h2>Turn your<br>ideas into art.</h2>
+
+            <p>
+                Build your own collection of drawings,
+                explore different shapes and let your creativity flow.
+            </p>
         </div>
 
-        <div class="input-wrapper">
-            <label for="regPassword">Password</label>
-            <input id="regPassword"
-                   type="password"
-                   name="password"
-                   placeholder="Password"
-                   required>
+        <div class="auth-decoration" aria-hidden="true">
+            <span class="decoration-circle"></span>
+            <span class="decoration-square"></span>
+            <span class="decoration-triangle"></span>
+            <span class="decoration-star">✦</span>
         </div>
 
-        <div class="input-wrapper">
-            <label for="regConfirm">Confirm Password</label>
-            <input id="regConfirm"
-                   type="password"
-                   name="confirmPassword"
-                   placeholder="Confirm Password"
-                   required>
+        <div class="auth-brand-footer">
+            DRAWINGS APP <span>·</span> CANVAS STUDIO
         </div>
 
-        <button type="submit">Create Account</button>
-    </form>
+    </section>
 
-    <p>
-        Already have an account?
-        <a th:href="@{/login}">Log In</a>
-    </p>
-</div>
 
-<script th:src="@{/js/register.js}"></script>
+    <section class="auth-main">
+
+        <div class="auth-card register-card">
+
+            <div class="auth-card-heading">
+                <span class="auth-overline">CREATE YOUR ACCOUNT</span>
+
+                <h1>Get started</h1>
+
+                <p>
+                    Create an account and start building your own drawings.
+                </p>
+            </div>
+
+
+            <!-- SERVER VALIDATION ERRORS -->
+
+            <div class="server-errors"
+                 role="alert"
+                 th:if="${!#strings.isEmpty(invalidFullName)
+                     or !#strings.isEmpty(invalidUsername)
+                     or !#strings.isEmpty(usernameAlreadyExists)
+                     or !#strings.isEmpty(bannedWordMessage)
+                     or !#strings.isEmpty(reservedUsernameMessage)
+                     or !#strings.isEmpty(invalidPassword)
+                     or !#strings.isEmpty(passwordMismatch)}">
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(invalidFullName)}"
+                   th:text="${invalidFullName}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(invalidUsername)}"
+                   th:text="${invalidUsername}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(usernameAlreadyExists)}"
+                   th:text="${usernameAlreadyExists}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(bannedWordMessage)}"
+                   th:text="${bannedWordMessage}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(reservedUsernameMessage)}"
+                   th:text="${reservedUsernameMessage}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(invalidPassword)}"
+                   th:text="${invalidPassword}">
+                </p>
+
+                <p class="error-message"
+                   th:if="${!#strings.isEmpty(passwordMismatch)}"
+                   th:text="${passwordMismatch}">
+                </p>
+
+            </div>
+
+
+            <form id="registerForm"
+                  class="auth-form register-form"
+                  method="post"
+                  th:action="@{/register}">
+
+
+                <!-- FULL NAME -->
+
+                <div class="auth-field">
+                    <label for="regFullName">Full name</label>
+
+                    <input
+                            id="regFullName"
+                            type="text"
+                            name="fullName"
+                            placeholder="Your full name"
+                            th:value="${fullName}"
+                            autocomplete="name"
+                            aria-describedby="fullNameError"
+                            required>
+
+                    <p id="fullNameError"
+                       class="field-error"
+                       hidden>
+                    </p>
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="auth-field">
+                    <label for="regUsername">Username</label>
+
+                    <input
+                            id="regUsername"
+                            type="text"
+                            name="username"
+                            placeholder="Choose a username"
+                            th:value="${username}"
+                            autocomplete="username"
+                            aria-describedby="usernameError"
+                            required>
+
+                    <p id="usernameError"
+                       class="field-error"
+                       hidden>
+                    </p>
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="auth-field">
+                    <label for="regPassword">Password</label>
+
+                    <input
+                            id="regPassword"
+                            type="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            aria-describedby="passwordError"
+                            required>
+
+                    <p id="passwordError"
+                       class="field-error"
+                       hidden>
+                    </p>
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="auth-field">
+                    <label for="regConfirm">Confirm password</label>
+
+                    <input
+                            id="regConfirm"
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Repeat your password"
+                            autocomplete="new-password"
+                            aria-describedby="confirmPasswordError"
+                            required>
+
+                    <p id="confirmPasswordError"
+                       class="field-error"
+                       hidden>
+                    </p>
+                </div>
+
+
+                <button type="submit" class="auth-submit">
+                    Create account
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </form>
+
+
+            <div class="auth-switch">
+                <span>Already have an account?</span>
+                <a th:href="@{/login}">Log in</a>
+            </div>
+
+
+            <div class="auth-card-footer">
+                Your creative workspace starts here.
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script th:src="@{/js/register.js(v=${#dates.createNow().time})}"></script>
+
 </body>
 </html>

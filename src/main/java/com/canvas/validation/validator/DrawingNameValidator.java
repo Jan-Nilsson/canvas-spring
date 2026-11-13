@@ -1,16 +1,28 @@
+
 package com.canvas.validation.validator;
 
+import com.canvas.validation.validator.rules.DrawingNameRules;
 import com.canvas.validation.validator.rules.common.BannedWords;
 import com.canvas.validation.validator.rules.common.InternationalNamePattern;
 import com.canvas.validation.validator.rules.common.TextNormalizer;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class DrawingNameValidator {
 
-    public boolean hasValidCharacters(String username) {
-        return Objects.nonNull(username)
-                && InternationalNamePattern.INTERNATIONAL_PATTERN.matcher(username).matches();
+    public boolean hasValidLength(String drawingName) {
+        return drawingName != null
+                && drawingName.trim().length() >= DrawingNameRules.MIN_LENGTH
+                && drawingName.trim().length() <= DrawingNameRules.MAX_LENGTH;
+    }
+
+    public boolean hasValidCharacters(String drawingName) {
+        return Objects.nonNull(drawingName)
+                && InternationalNamePattern.INTERNATIONAL_PATTERN
+                .matcher(drawingName)
+                .matches();
     }
 
     public boolean containsBannedWord(String drawingName) {
@@ -24,4 +36,9 @@ public class DrawingNameValidator {
                 .anyMatch(normalized::contains);
     }
 
+    public boolean isValid(String drawingName) {
+        return hasValidLength(drawingName)
+                && hasValidCharacters(drawingName)
+                && !containsBannedWord(drawingName);
+    }
 }

@@ -1,0 +1,429 @@
+/* ==================================================
+   SHARED APPLICATION NAVBAR
+================================================== */
+
+.site-navbar {
+    position: relative;
+    z-index: 50;
+
+    display: flex;
+    flex: 0 0 64px;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    width: 100%;
+    min-height: 64px;
+    padding: 0 24px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    background: #17243a;
+    color: #fff;
+
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+
+/* ==================================================
+   BRAND
+================================================== */
+
+.site-brand {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+
+    gap: 11px;
+    min-width: 0;
+
+    color: #fff;
+    text-decoration: none;
+}
+
+.site-brand:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.site-brand-icon {
+    display: grid;
+    flex: 0 0 37px;
+    place-items: center;
+
+    width: 37px;
+    height: 37px;
+    padding: 5px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+
+    background: #fff;
+}
+
+.site-brand-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.site-brand-copy strong,
+.site-brand-copy small {
+    display: block;
+}
+
+.site-brand-copy strong {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.2;
+}
+
+.site-brand-copy small {
+    margin-top: 3px;
+    color: #aebbd0;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+}
+
+
+/* ==================================================
+   NAVIGATION
+================================================== */
+
+.site-navigation {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+    min-width: 0;
+}
+
+.site-navigation a {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 36px;
+    padding: 0 13px;
+
+    border: 1px solid transparent;
+    border-radius: 7px;
+
+    color: #cbd5e4;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+            background 120ms ease,
+            color 120ms ease,
+            border-color 120ms ease;
+}
+
+.site-navigation a:hover,
+.site-navigation a.is-active {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* ==================================================
+   USER MENU
+================================================== */
+
+.navbar-account {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.profile-menu-trigger {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-height: 42px;
+    padding: 4px 8px 4px 5px;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    background: transparent;
+    color: #fff;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+            background 120ms ease,
+            border-color 120ms ease;
+}
+
+.profile-menu-trigger:hover,
+.profile-menu-trigger[aria-expanded="true"] {
+    border-color: rgba(255, 255, 255, 0.13);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-avatar {
+    display: grid;
+    flex: 0 0 32px;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+
+    background: #dce8ff;
+    color: #315b9b;
+}
+
+.navbar-avatar-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.navbar-avatar svg {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.profile-trigger-copy {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+    max-width: 125px;
+    min-width: 0;
+}
+
+.profile-trigger-copy strong,
+.profile-trigger-copy small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-trigger-copy strong {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-trigger-copy small {
+    color: #aebbd0;
+    font-size: 9px;
+}
+
+.profile-chevron {
+    width: 15px;
+    height: 15px;
+    margin-left: 2px;
+
+    fill: none;
+    stroke: #aebbd0;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    transition: transform 140ms ease;
+}
+
+.profile-menu-trigger[aria-expanded="true"] .profile-chevron {
+    transform: rotate(180deg);
+}
+
+
+/* ==================================================
+   DROPDOWN
+================================================== */
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 9px);
+    right: 0;
+    z-index: 100;
+
+    width: 230px;
+    padding: 7px;
+
+    border: 1px solid #e1e6ee;
+    border-radius: 10px;
+
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(18, 32, 53, 0.2);
+
+    color: #202b3c;
+}
+
+.profile-dropdown[hidden] {
+    display: none !important;
+}
+
+.profile-dropdown-heading {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+    padding: 10px 11px 12px;
+}
+
+.dropdown-user-name {
+    overflow: hidden;
+    color: #202b3c;
+    font-size: 12px;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-user-handle {
+    color: #8793a5;
+    font-size: 10px;
+}
+
+.profile-dropdown > a,
+.profile-dropdown form button {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+    min-height: 37px;
+    padding: 8px 10px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: #536176;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.profile-dropdown > a:hover,
+.profile-dropdown form button:hover {
+    background: #f3f6fb;
+    color: #285fbe;
+    text-decoration: none;
+}
+
+.profile-dropdown svg {
+    flex: 0 0 17px;
+
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.profile-dropdown-divider {
+    height: 1px;
+    margin: 6px 4px;
+    background: #e8ecf2;
+}
+
+.profile-dropdown form {
+    margin: 0;
+}
+
+.profile-dropdown form button.dropdown-logout {
+    color: #bf454d;
+}
+
+.profile-dropdown form button.dropdown-logout:hover {
+    background: #fff1f1;
+    color: #a9323a;
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 650px) {
+    .site-navbar {
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .site-navigation {
+        justify-content: flex-start;
+        gap: 2px;
+    }
+
+    .site-navigation a {
+        min-height: 33px;
+        padding: 0 8px;
+        font-size: 10px;
+    }
+
+    .site-brand-copy small,
+    .profile-trigger-copy,
+    .profile-chevron {
+        display: none;
+    }
+
+    .site-brand-copy strong {
+        font-size: 12px;
+    }
+
+    .site-brand-icon {
+        flex-basis: 33px;
+        width: 33px;
+        height: 33px;
+    }
+
+    .profile-menu-trigger {
+        padding: 3px;
+    }
+}
+
+@media (max-width: 390px) {
+    .site-brand-copy {
+        display: none;
+    }
+
+    .site-navigation a {
+        padding: 0 6px;
+        font-size: 9px;
+    }
+}

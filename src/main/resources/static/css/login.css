@@ -1,0 +1,15 @@
+/* ==================================================
+   LOGIN PAGE
+================================================== */
+
+.login-card {
+    max-width: 430px;
+}
+
+.login-form {
+    gap: 21px;
+}
+
+.login-card .auth-submit {
+    margin-top: 8px;
+}

@@ -3,129 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Canvas - Drawings App</title>
+    <meta name="theme-color" content="#17243a">
+
+    <title>Canvas Studio - Drawings App</title>
 
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/css/canvas.css}">
-    <link rel="stylesheet" th:href="@{/css/commons.css}">
+
+    <link rel="stylesheet" th:href="@{/css/commons.css(v=${#dates.createNow().time})}">
+    <link rel="stylesheet" th:href="@{/css/canvas.css(v=${#dates.createNow().time})}">
+    <link rel="stylesheet" th:href="@{/css/app-navbar.css(v=${#dates.createNow().time})}">
 </head>
+
 <body>
 
-<header>
-    <h1>🎨 Drawings App</h1>
+<header th:replace="~{fragments/navbar :: navbar('canvas')}"></header>
 
-    <div class="user-info">
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Logout</button>
-        </form>
-    </div>
-</header>
 
-<!-- In-app messages. The backend can fill data-initial-message
-     (e.g. th:attr="data-initial-message=${message},data-initial-type=${messageType}") -->
-<div id="appMessage" class="app-message" role="status" aria-live="polite" hidden></div>
+<div id="appMessage"
+     class="app-message"
+     role="status"
+     aria-live="polite"
+     hidden
+     th:attr="data-initial-message=${message},data-initial-type=${messageType}">
+</div>
 
-<main>
-    <aside class="sidebar">
-        <h2>Shapes</h2>
 
-        <div class="shapes">
-            <button type="button" class="shape-btn"
-                    data-shape="circle" aria-label="Circle">⚪</button>
-            <button type="button" class="shape-btn"
-                    data-shape="square" aria-label="Square">⬛</button>
-            <button type="button" class="shape-btn"
-                    data-shape="triangle" aria-label="Triangle">🔺</button>
-            <button type="button" class="shape-btn"
-                    data-shape="star7" aria-label="Star">⭐</button>
-            <button type="button" class="shape-btn"
-                    data-shape="polygon" aria-label="Polygon">⬠</button>
-            <button type="button" class="shape-btn"
-                    data-shape="free" aria-label="Free drawing">✏️</button>
+<main class="workspace">
+
+    <!-- ============================================
+         LEFT PANEL: TOOLS
+    ============================================= -->
+
+    <aside id="toolsPanel"
+           class="side-panel tools-panel"
+           aria-label="Drawing tools">
+
+        <div class="panel-heading">
+            <div>
+                <span class="eyebrow">WORKSPACE</span>
+                <h2>Tools</h2>
+            </div>
         </div>
 
-        <div id="polygonOptions" hidden>
-            <label for="polygonSides">Polygon sides:</label>
-            <input type="number" id="polygonSides" value="5" min="3" max="50" step="1">
-        </div>
 
-        <div class="options">
-            <label for="colorPicker">Color:</label>
-            <input type="color" id="colorPicker" value="#000000">
+        <section class="panel-section shape-section"
+                 aria-labelledby="toolsHeading">
 
-            <label class="switch" for="fillToggle">
-                <input type="checkbox" id="fillToggle" checked>
-                <span class="slider"></span>
-            </label>
-            <span id="fillLabel">Filled</span>
-        </div>
+            <div class="section-heading">
+                <h3 id="toolsHeading">Tools & shapes</h3>
+                <span class="section-caption">Choose a tool</span>
+            </div>
 
-        <h3>New Settings</h3>
 
-        <label for="shapeSize">
-            Shape Size: <span id="shapeSizeLabel">50</span> px
-        </label>
-        <input type="range" id="shapeSize" min="10" max="300" value="50">
+            <div class="shapes"
+                 role="group"
+                 aria-label="Drawing tools">
 
-        <label for="freeWidth">
-            Free Draw Width: <span id="freeWidthLabel">2</span> px
-        </label>
-        <input type="range" id="freeWidth" min="1" max="20" value="2">
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="select"
+                        aria-label="Select and move"
+                        aria-pressed="true"
+                        title="Select and move">
 
-        <label for="canvasWidth">Canvas Width (px):</label>
-        <input type="number" id="canvasWidth" value="800" min="100" max="4000" step="1">
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M8 4.5 23.5 17l-7 1.1-3.4 7.1L8 4.5Z"></path>
+                    </svg>
 
-        <label for="canvasHeight">Canvas Height (px):</label>
-        <input type="number" id="canvasHeight" value="600" min="100" max="4000" step="1">
+                    <span>Select</span>
+                </button>
 
-        <small class="hint">Press Enter or click outside to apply (100–4000 px).</small>
 
-        <button type="button" id="resetCanvasSize">Default size (800×600)</button>
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="circle"
+                        aria-label="Circle"
+                        aria-pressed="false"
+                        title="Circle">
 
-        <div class="actions">
-            <button type="button" id="undoBtn">↩️ Undo</button>
-            <button type="button" id="redoBtn">↪️ Redo</button>
-            <button type="button" id="clearBtn">🗑️ Clear All</button>
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <circle cx="16" cy="16" r="10"></circle>
+                    </svg>
 
-            <form id="saveForm" th:action="@{/canvas/save}" method="post" novalidate>
-                <label for="drawingName">Drawing name:</label>
+                    <span>Circle</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="square"
+                        aria-label="Square"
+                        aria-pressed="false"
+                        title="Square">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <rect x="6" y="6" width="20" height="20" rx="1"></rect>
+                    </svg>
+
+                    <span>Square</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="triangle"
+                        aria-label="Triangle"
+                        aria-pressed="false"
+                        title="Triangle">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M16 5 28 26H4Z"></path>
+                    </svg>
+
+                    <span>Triangle</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="star7"
+                        aria-label="Seven-pointed star"
+                        aria-pressed="false"
+                        title="Seven-pointed star">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <polygon points="
+                            16,3
+                            18.82,10.14
+                            26.16,7.89
+                            22.34,14.55
+                            28.67,18.89
+                            21.08,20.05
+                            21.64,27.71
+                            16,22.5
+                            10.36,27.71
+                            10.92,20.05
+                            3.33,18.89
+                            9.66,14.55
+                            5.84,7.89
+                            13.18,10.14
+                        "></polygon>
+                    </svg>
+
+                    <span>Star</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="polygon"
+                        aria-label="Polygon"
+                        aria-pressed="false"
+                        title="Polygon">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <polygon points="16,3.5 27.5,12 23,26 9,26 4.5,12"></polygon>
+                    </svg>
+
+                    <span>Polygon</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="free"
+                        aria-label="Free drawing"
+                        aria-pressed="false"
+                        title="Free drawing">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M5 24c4-1 5-12 10-12 4 0 3 8 7 8 2 0 3-2 5-5"></path>
+                        <path d="m23 6 3-2 3 3-2 3"></path>
+                    </svg>
+
+                    <span>Free draw</span>
+                </button>
+
+
+                <button type="button"
+                        class="shape-btn"
+                        data-shape="eraser"
+                        aria-label="Eraser"
+                        aria-pressed="false"
+                        title="Eraser">
+
+                    <svg viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="m11 5 15 15-7 7H9L3 21 18 6a5 5 0 0 1 7 0"></path>
+                        <path d="m9 15 10 10M18 27h11"></path>
+                    </svg>
+
+                    <span>Eraser</span>
+                </button>
+
+            </div>
+
+
+            <div id="polygonOptions" class="sub-control" hidden>
+                <label for="polygonSides">Number of sides</label>
+
+                <input type="number"
+                       id="polygonSides"
+                       value="5"
+                       min="3"
+                       max="50"
+                       step="1">
+            </div>
+
+
+            <div id="starOptions" class="sub-control" hidden>
+                <label for="starPoints">Number of points</label>
+
+                <input type="number"
+                       id="starPoints"
+                       value="7"
+                       min="3"
+                       max="20"
+                       step="1">
+            </div>
+
+        </section>
+
+
+        <!-- APPEARANCE -->
+
+        <section class="panel-section"
+                 aria-labelledby="appearanceHeading">
+
+            <div class="section-heading">
+                <h3 id="appearanceHeading">Appearance</h3>
+            </div>
+
+            <div class="color-control" id="colorControls">
+                <label for="colorPicker">Color</label>
+
+                <input type="color"
+                       id="colorPicker"
+                       value="#202a3a"
+                       aria-label="Drawing color">
+            </div>
+
+
+            <div class="fill-control" id="fillControls">
+
+                <span class="control-label">Fill</span>
+
+                <label class="switch" for="fillToggle">
+                    <input type="checkbox" id="fillToggle" checked>
+                    <span class="switch-track"></span>
+                </label>
+
+                <span id="fillLabel" class="fill-state">Filled</span>
+
+            </div>
+
+        </section>
+
+
+        <!-- SETTINGS -->
+
+        <section class="panel-section"
+                 aria-labelledby="settingsHeading">
+
+            <div class="section-heading">
+                <h3 id="settingsHeading">Settings</h3>
+            </div>
+
+
+            <div class="range-control" id="shapeSizeControls">
+
+                <div class="range-heading">
+                    <label for="shapeSize">Default shape size</label>
+                    <output id="shapeSizeLabel" for="shapeSize">50</output>
+                </div>
+
+                <input type="range"
+                       id="shapeSize"
+                       min="10"
+                       max="300"
+                       value="50">
+
+                <small class="hint">
+                    Click to place at this size, or drag from the centre
+                    to set a custom size.
+                </small>
+
+            </div>
+
+
+            <div class="range-control" id="freeWidthControls" hidden>
+
+                <div class="range-heading">
+                    <label for="freeWidth" id="freeWidthTitle">Stroke width</label>
+                    <output id="freeWidthLabel" for="freeWidth">2</output>
+                </div>
+
+                <input type="range"
+                       id="freeWidth"
+                       min="1"
+                       max="80"
+                       value="2">
+
+            </div>
+
+
+            <div class="dimensions-control">
+
+                <div class="section-heading compact-heading">
+                    <h3>Canvas size</h3>
+                    <span>px</span>
+                </div>
+
+                <div class="dimension-fields">
+
+                    <label for="canvasWidth">
+                        Width
+
+                        <input type="number"
+                               id="canvasWidth"
+                               value="800"
+                               min="100"
+                               max="4000"
+                               step="1">
+                    </label>
+
+                    <label for="canvasHeight">
+                        Height
+
+                        <input type="number"
+                               id="canvasHeight"
+                               value="600"
+                               min="100"
+                               max="4000"
+                               step="1">
+                    </label>
+
+                </div>
+
+                <small class="hint">
+                    100–4000 px. Press Enter or leave the field to apply.
+                </small>
+
+                <button type="button"
+                        id="resetCanvasSize"
+                        class="secondary-button full-button">
+                    Restore 800 × 600
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SAVE -->
+
+        <section class="panel-section save-section"
+                 aria-label="Save drawing">
+
+            <form id="saveForm"
+                  th:action="@{/canvas/save}"
+                  method="post"
+                  novalidate>
+
+                <label for="drawingName">Drawing name</label>
+
                 <input type="text"
                        id="drawingName"
                        name="drawingName"
                        placeholder="My drawing">
 
-                <input type="hidden" id="drawingData" name="drawingData">
+                <input type="hidden"
+                       id="drawingData"
+                       name="drawingData">
 
-                <button type="submit" id="saveBtn">💾 Save</button>
+                <input type="hidden"
+                       id="savedCanvasWidth"
+                       name="canvasWidth">
+
+                <input type="hidden"
+                       id="savedCanvasHeight"
+                       name="canvasHeight">
+
+                <button type="submit"
+                        id="saveBtn"
+                        class="save-button">
+
+                    <span aria-hidden="true">↥</span>
+                    Save drawing
+
+                </button>
+
             </form>
-        </div>
+
+        </section>
+
     </aside>
 
-    <section class="canvas-area">
-        <div class="zoom-bar" role="group" aria-label="Zoom">
-            <button type="button" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">−</button>
-            <span id="zoomLabel" class="zoom-label">100%</span>
-            <button type="button" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
-            <button type="button" id="zoomResetBtn" title="Actual size">100%</button>
-            <button type="button" id="zoomFitBtn" title="Fit to window">Fit</button>
-            <small class="hint">Ctrl + mouse wheel to zoom</small>
+
+    <!-- ============================================
+         CENTRE: CANVAS
+    ============================================= -->
+
+    <section class="canvas-area"
+             aria-label="Canvas workspace">
+
+        <div class="canvas-toolbar">
+
+
+            <!-- PANEL VISIBILITY -->
+
+            <div class="toolbar-group workspace-panel-actions"
+                 role="group"
+                 aria-label="Workspace panels">
+
+                <button type="button"
+                        id="toggleToolsPanel"
+                        class="toolbar-button"
+                        aria-controls="toolsPanel"
+                        aria-expanded="true"
+                        title="Show or hide tools">
+                    Tools
+                </button>
+
+                <button type="button"
+                        id="toggleObjectsPanel"
+                        class="toolbar-button"
+                        aria-controls="objectsPanel"
+                        aria-expanded="true"
+                        title="Show or hide objects">
+                    Objects
+                </button>
+
+                <span class="toolbar-divider" aria-hidden="true"></span>
+
+            </div>
+
+
+            <!-- UNDO / REDO -->
+
+            <div class="toolbar-group history-actions"
+                 role="group"
+                 aria-label="Edit history">
+
+                <button type="button"
+                        id="undoBtn"
+                        class="toolbar-button"
+                        title="Undo (Ctrl+Z)"
+                        aria-label="Undo">
+                    ↶ <span>Undo</span>
+                </button>
+
+                <button type="button"
+                        id="redoBtn"
+                        class="toolbar-button"
+                        title="Redo (Ctrl+Y)"
+                        aria-label="Redo">
+                    ↷ <span>Redo</span>
+                </button>
+
+                <span class="toolbar-divider" aria-hidden="true"></span>
+
+                <button type="button"
+                        id="clearBtn"
+                        class="toolbar-button danger-button"
+                        title="Clear canvas">
+                    Clear
+                </button>
+
+            </div>
+
+
+            <!-- ZOOM -->
+
+            <div class="toolbar-group zoom-controls"
+                 role="group"
+                 aria-label="Zoom controls">
+
+                <button type="button"
+                        id="zoomOutBtn"
+                        class="zoom-button"
+                        title="Zoom out"
+                        aria-label="Zoom out">
+                    −
+                </button>
+
+                <span id="zoomLabel" class="zoom-label">100%</span>
+
+                <button type="button"
+                        id="zoomInBtn"
+                        class="zoom-button"
+                        title="Zoom in"
+                        aria-label="Zoom in">
+                    +
+                </button>
+
+                <span class="toolbar-divider" aria-hidden="true"></span>
+
+                <button type="button"
+                        id="zoomResetBtn"
+                        class="toolbar-button">
+                    100%
+                </button>
+
+                <button type="button"
+                        id="zoomFitBtn"
+                        class="toolbar-button">
+                    Fit
+                </button>
+
+            </div>
+
         </div>
+
 
         <div class="canvas-container" id="canvasContainer">
+
             <div class="canvas-frame">
-                <canvas id="drawingCanvas" width="800" height="600">
+
+                <canvas id="drawingCanvas"
+                        width="800"
+                        height="600">
+
                     Your browser does not support the canvas element.
+
                 </canvas>
+
             </div>
+
         </div>
+
+
+        <div class="canvas-hint">
+            Select to click and move objects. Drag from the centre to draw a shape.
+            Ctrl/Cmd + Z to undo.
+        </div>
+
     </section>
 
-    <aside class="object-history">
-        <h2>Your Objects</h2>
-        <ul id="objectList"></ul>
+
+    <!-- ============================================
+         RIGHT: OBJECTS AND PROPERTIES
+    ============================================= -->
+
+    <aside id="objectsPanel"
+           class="side-panel object-history"
+           aria-label="Drawing objects and properties">
+
+        <div class="panel-heading object-panel-heading">
+            <div>
+                <span class="eyebrow">LAYERS</span>
+
+                <h2>
+                    Objects
+                    <span id="objectCount" class="object-count">0</span>
+                </h2>
+            </div>
+        </div>
+
+
+        <p class="panel-description">
+            Select an item here or use Select and click an object on the canvas.
+            Drag a selected object to move it.
+        </p>
+
+
+        <ul id="objectList" aria-live="polite"></ul>
+
+
+        <p class="empty-state" id="emptyObjectsHint">
+            Your drawing is empty. Choose a shape to get started.
+        </p>
+
+
+        <section id="selectedObjectEditor"
+                 class="selected-object-editor"
+                 aria-label="Selected object properties"
+                 hidden>
+
+            <div class="editor-heading">
+
+                <div>
+                    <span class="eyebrow">PROPERTIES</span>
+                    <h3 id="selectedObjectTitle">Selected object</h3>
+                </div>
+
+                <button type="button"
+                        id="clearSelectionBtn"
+                        class="clear-selection-button"
+                        title="Deselect object"
+                        aria-label="Deselect object">
+                    ×
+                </button>
+
+            </div>
+
+            <div id="selectedObjectFields"
+                 class="selected-object-fields">
+            </div>
+
+            <p class="editor-hint">
+                Changes are applied to the selected object.
+                Drag it on the canvas to move it.
+            </p>
+
+        </section>
+
     </aside>
+
 </main>
 
-<script th:src="@{/js/canvas.js}"></script>
+
+<script th:src="@{/js/navbar.js(v=${#dates.createNow().time})}" defer></script>
+<script th:src="@{/js/canvas.js(v=${#dates.createNow().time})}"></script>
+
 </body>
 </html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#17243a">
+
+    <title>Edit profile - Drawings App</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/commons.css}">
+    <link rel="stylesheet" th:href="@{/css/app-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css(v=${#dates.createNow().time})}">
+</head>
+
+<body class="profile-page">
+
+<header th:replace="~{fragments/navbar :: navbar('profile')}"></header>
+
+<main class="edit-profile-main">
+
+    <div class="edit-profile-heading">
+
+        <div>
+            <span class="profile-eyebrow">YOUR ACCOUNT</span>
+
+            <h1>Edit profile</h1>
+
+            <p>
+                Choose how other people see you in Drawings App.
+            </p>
+        </div>
+
+        <a class="back-to-profile-link"
+           th:href="@{/profile/{username}(username=${profile.username})}">
+            Back to profile
+        </a>
+
+    </div>
+
+
+    <div class="profile-server-error"
+         role="alert"
+         th:if="${errorMessage != null and !#strings.isEmpty(errorMessage)}"
+         th:text="${errorMessage}">
+    </div>
+
+
+    <form id="editProfileForm"
+          class="edit-profile-card"
+          th:action="@{/profile/edit}"
+          method="post"
+          enctype="multipart/form-data">
+
+
+        <!-- PROFILE PICTURE -->
+
+        <section class="edit-profile-section avatar-edit-section">
+
+            <div class="edit-section-copy">
+                <h2>Profile picture</h2>
+
+                <p>
+                    Use a square image. PNG, JPEG and WebP are supported,
+                    up to 5 MB.
+                </p>
+            </div>
+
+
+            <div class="avatar-edit-controls">
+
+                <div class="profile-avatar profile-avatar-edit">
+
+                    <img id="profileImagePreview"
+                         th:if="${profile.profileImageUrl != null and !#strings.isEmpty(profile.profileImageUrl)}"
+                         th:src="${profile.profileImageUrl}"
+                         alt="Profile picture preview"
+                         class="profile-avatar-image">
+
+                    <svg id="profileImageFallback"
+                         th:hidden="${profile.profileImageUrl != null and !#strings.isEmpty(profile.profileImageUrl)}"
+                         viewBox="0 0 24 24"
+                         aria-hidden="true">
+
+                        <circle cx="12" cy="8" r="3.5"></circle>
+                        <path d="M4.8 20c.7-3.6 3.3-5.4 7.2-5.4s6.5 1.8 7.2 5.4"></path>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="avatar-file-actions">
+
+                    <label for="profileImage" class="profile-upload-button">
+                        Choose image
+                    </label>
+
+                    <input id="profileImage"
+                           type="file"
+                           name="profileImage"
+                           accept="image/png,image/jpeg,image/webp"
+                           hidden>
+
+
+                    <button type="button"
+                            id="removeProfileImageButton"
+                            class="profile-remove-image-button"
+                            th:hidden="${profile.profileImageUrl == null or #strings.isEmpty(profile.profileImageUrl)}">
+                        Remove picture
+                    </button>
+
+
+                    <input type="hidden"
+                           id="removeProfileImage"
+                           name="removeProfileImage"
+                           value="false">
+
+
+                    <p id="profileImageError"
+                       class="profile-field-error"
+                       hidden>
+                    </p>
+
+                    <p id="profileImageName" class="profile-file-name">
+                        No image selected
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PUBLIC INFORMATION -->
+
+        <section class="edit-profile-section">
+
+            <div class="edit-section-copy">
+                <h2>Public information</h2>
+
+                <p>
+                    Your username and profile details are visible to other users.
+                </p>
+            </div>
+
+
+            <div class="profile-form-fields">
+
+                <div class="profile-form-field">
+
+                    <label for="profileUsername">Username</label>
+
+                    <input id="profileUsername"
+                           type="text"
+                           name="username"
+                           minlength="2"
+                           maxlength="50"
+                           autocomplete="username"
+                           th:value="${profile.username}"
+                           required>
+
+                    <small>
+                        Your profile address will use this username.
+                    </small>
+
+                </div>
+
+
+                <div class="profile-form-field">
+
+                    <label for="displayName">
+                        Display name <span>Optional</span>
+                    </label>
+
+                    <input id="displayName"
+                           type="text"
+                           name="displayName"
+                           maxlength="80"
+                           autocomplete="name"
+                           placeholder="How should we call you?"
+                           th:value="${profile.displayName}">
+
+                    <small>
+                        If empty, your username will be displayed instead.
+                    </small>
+
+                </div>
+
+
+                <div class="profile-form-field">
+
+                    <div class="profile-label-row">
+                        <label for="bio">Biography</label>
+                        <span>Optional</span>
+                    </div>
+
+                    <textarea id="bio"
+                              name="bio"
+                              rows="5"
+                              maxlength="300"
+                              placeholder="Tell people a little about yourself..."
+                              th:text="${profile.bio}">
+                    </textarea>
+
+                    <small>
+                        <span id="bioCharacterCount">0</span>/300 characters
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACTIONS -->
+
+        <div class="edit-profile-actions">
+
+            <a class="profile-cancel-button"
+               th:href="@{/profile/{username}(username=${profile.username})}">
+                Cancel
+            </a>
+
+            <button type="submit" class="profile-primary-button">
+                Save changes
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+<script th:src="@{/js/navbar.js(v=${#dates.createNow().time})}" defer></script>
+<script th:src="@{/js/profile.js(v=${#dates.createNow().time})}" defer></script>
+
+</body>
+</html>

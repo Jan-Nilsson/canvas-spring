@@ -1,7 +1,7 @@
 
 package com.canvas.service;
 
-import com.canvas.model.User;
+import com.canvas.exception.InvalidUserRegistrationException;
 import com.canvas.repository.UserRepository;
 import com.canvas.validation.validator.UsernameValidator;
 import com.canvas.validation.validator.FullNameValidator;
@@ -9,7 +9,8 @@ import com.canvas.validation.validator.PasswordValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -34,7 +35,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<Long> registerUser(
+    public void registerUser(
             String fullName,
             String username,
             String password,
@@ -42,58 +43,79 @@ public class UserService {
 
         fullName = fullName == null ? null : fullName.trim();
 
-        if (!validateRegister(fullName, username, password, confirmPassword)) {
-            return Optional.empty();
+        Map<String, String> errors = validateRegister(
+                fullName, username, password, confirmPassword
+        );
+
+        if (!errors.isEmpty()) {
+            throw new InvalidUserRegistrationException(errors);
         }
 
         String encodedPassword = passwordEncoder.encode(password);
 
-        User user = userRepository.save(fullName, username, encodedPassword);
-
-        return Optional.of(user.getId());
+        userRepository.save(fullName, username, encodedPassword);
     }
 
-    public boolean checkUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    public boolean passwordsMatch(
-            String password,
-            String confirmPassword) {
-
-        return passwordValidator.passwordsMatch(password, confirmPassword);
-    }
-
-    public boolean isValidUsername(String username) {
-        return usernameValidator.isValid(username);
-    }
-
-    public boolean isValidFullName(String fullName) {
-        return fullNameValidator.isValid(fullName);
-    }
-
-    public boolean isValidPassword(String password) {
-        return passwordValidator.isValid(password);
-    }
-
-    public boolean containsBannedWord(String username) {
-        return usernameValidator.containsBannedWord(username);
-    }
-
-    public boolean isReserved(String username) {
-        return usernameValidator.isReserved(username);
-    }
-
-    public boolean validateRegister(
+    private Map<String, String> validateRegister(
             String fullName,
             String username,
             String password,
             String confirmPassword) {
 
-        return isValidFullName(fullName)
-                && !checkUsername(username)
-                && isValidUsername(username)
-                && isValidPassword(password)
-                && passwordsMatch(password, confirmPassword);
+        Map<String, String> errors = new HashMap<>();
+
+        if (!fullNameValidator.isValid(fullName)) {
+            errors.put(
+                    "invalidFullName",
+                    "Full name must contain between 2 and 100 characters"
+            );
+        }
+
+        if (!usernameValidator.isValid(username)) {
+            errors.put(
+                    "invalidUsername",
+                    "Username format is invalid"
+            );
+        } else {
+
+            if (usernameValidator.containsBannedWord(username)) {
+                errors.put(
+                        "bannedWordMessage",
+                        "Username '" + username
+                                + "' contains inappropriate language"
+                );
+            }
+
+            if (usernameValidator.isReserved(username)) {
+                errors.put(
+                        "reservedUsernameMessage",
+                        "Username '" + username
+                                + "' is reserved for internal usage"
+                );
+            }
+
+            if (userRepository.existsByUsername(username)) {
+                errors.put(
+                        "usernameAlreadyExists",
+                        "Username '" + username + "' is already taken"
+                );
+            }
+        }
+
+        if (!passwordValidator.isValid(password)) {
+            errors.put(
+                    "invalidPassword",
+                    "Password must contain at least 5 characters"
+            );
+        }
+
+        if (!passwordValidator.passwordsMatch(password, confirmPassword)) {
+            errors.put(
+                    "passwordMismatch",
+                    "Passwords do not match"
+            );
+        }
+
+        return errors;
     }
 }

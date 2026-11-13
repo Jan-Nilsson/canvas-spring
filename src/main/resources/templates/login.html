@@ -3,37 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <meta name="theme-color" content="#17243a">
+
+    <title>Log In - Drawings App</title>
 
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 
-    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/commons.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css(v=${#dates.createNow().time})}">
 </head>
-<body>
-<div class="container">
-    <h1>Log In</h1>
 
-    <div class="error-message"
-         th:if="${errorMessage}"
-         th:text="${errorMessage}">
-    </div>
+<body class="auth-page">
 
-    <form method="post" th:action="@{/login}">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username"
-               placeholder="Username" required>
+<main class="auth-layout">
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password"
-               placeholder="Password" required>
+    <section class="auth-brand-panel">
 
-        <button type="submit">Log In</button>
-    </form>
+        <div class="auth-brand">
+            <img
+                    class="auth-brand-icon"
+                    th:src="@{/favicon.ico}"
+                    alt="">
 
-    <p>Don't have an account?
-        <a href="/register">Register</a>
-    </p>
-</div>
+            <div class="auth-brand-copy">
+                <strong>Drawings App</strong>
+                <span>Canvas Studio</span>
+            </div>
+        </div>
+
+        <div class="auth-brand-message">
+            <span class="auth-overline">YOUR CREATIVE SPACE</span>
+
+            <h2>Make room<br>for your ideas.</h2>
+
+            <p>
+                Create, experiment and bring your ideas to life
+                with your own digital canvas.
+            </p>
+        </div>
+
+        <div class="auth-decoration" aria-hidden="true">
+            <span class="decoration-circle"></span>
+            <span class="decoration-square"></span>
+            <span class="decoration-triangle"></span>
+            <span class="decoration-star">✦</span>
+        </div>
+
+        <div class="auth-brand-footer">
+            DRAWINGS APP <span>·</span> CANVAS STUDIO
+        </div>
+
+    </section>
+
+
+    <section class="auth-main">
+
+        <div class="auth-card login-card">
+
+            <div class="auth-card-heading">
+                <span class="auth-overline">WELCOME BACK</span>
+
+                <h1>Log in</h1>
+
+                <p>
+                    Enter your credentials to access your workspace.
+                </p>
+            </div>
+
+
+            <div class="server-errors"
+                 role="alert"
+                 th:if="${!#strings.isEmpty(errorMessage)}">
+
+                <p class="error-message"
+                   th:text="${errorMessage}">
+                </p>
+
+            </div>
+
+
+            <form class="auth-form login-form"
+                  method="post"
+                  th:action="@{/login}">
+
+                <div class="auth-field">
+                    <label for="username">Username</label>
+
+                    <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Your username"
+                            autocomplete="username"
+                            required
+                            autofocus>
+                </div>
+
+
+                <div class="auth-field">
+                    <label for="password">Password</label>
+
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Your password"
+                            autocomplete="current-password"
+                            required>
+                </div>
+
+
+                <button type="submit" class="auth-submit">
+                    Log in
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </form>
+
+
+            <div class="auth-switch">
+                <span>Don't have an account?</span>
+                <a th:href="@{/register}">Create an account</a>
+            </div>
+
+
+            <div class="auth-card-footer">
+                Your creative workspace is waiting for you.
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
 </body>
 </html>
