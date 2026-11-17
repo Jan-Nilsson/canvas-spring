@@ -1,0 +1,327 @@
+/* ==================================================
+   WORKSPACE SIDE RAILS
+   Load this file after canvas.css.
+================================================== */
+
+.workspace {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.workspace-rail {
+    display: flex;
+    flex: 0 0 48px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 48px;
+    min-width: 48px;
+    padding: 10px 5px;
+    background: #17243a;
+    border-color: rgba(255, 255, 255, 0.08);
+    z-index: 2;
+}
+
+.workspace-rail-left {
+    border-right: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.workspace-rail-right {
+    border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.workspace-rail-button {
+    display: flex;
+    width: 38px;
+    min-height: 58px;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 2px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #aebbd0;
+    cursor: pointer;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 650;
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+.workspace-rail-button:hover,
+.workspace-rail-button.active {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.workspace-rail-button svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.workspace > .side-panel[hidden] {
+    display: none !important;
+}
+
+.workspace > .side-panel {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: min(360px, 34vw);
+}
+
+.workspace > .canvas-area {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Give the Bucket tool the same visual treatment as the other tools. */
+
+.shape-btn[data-shape="bucket"] svg {
+    fill: none;
+}
+
+.export-button {
+    white-space: nowrap;
+}
+
+
+/* ==================================================
+   RESPONSIVE SIDE RAILS
+================================================== */
+
+@media (max-width: 820px) {
+    .workspace-rail {
+        flex-basis: 42px;
+        width: 42px;
+        min-width: 42px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .workspace-rail-button {
+        width: 36px;
+        min-height: 54px;
+    }
+
+    .workspace > .side-panel {
+        width: min(310px, calc(100vw - 90px));
+        max-width: min(310px, calc(100vw - 90px));
+    }
+}
+
+@media (max-width: 520px) {
+    .workspace-rail {
+        flex-basis: 38px;
+        width: 38px;
+        min-width: 38px;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    .workspace-rail-button {
+        width: 34px;
+        font-size: 8px;
+    }
+
+    .workspace > .side-panel {
+        width: min(280px, calc(100vw - 80px));
+        max-width: min(280px, calc(100vw - 80px));
+    }
+}
+
+
+/* ==================================================
+   LIGHT / DARK THEME
+   The theme is controlled by the shared navbar.
+================================================== */
+
+body[data-theme="dark"] {
+    color-scheme: dark;
+    background: #101827;
+    color: #e5eaf2;
+}
+
+body[data-theme="light"] {
+    color-scheme: light;
+    background: #f3f5f8;
+    color: #202938;
+}
+
+
+/* LEFT AND RIGHT RAILS */
+
+body[data-theme="light"] .workspace-rail {
+    background: #e7ebf1;
+    border-color: #d5dce6;
+}
+
+body[data-theme="light"] .workspace-rail-button {
+    color: #536174;
+}
+
+body[data-theme="light"] .workspace-rail-button:hover,
+body[data-theme="light"] .workspace-rail-button.active {
+    color: #17243a;
+    background: #d5deea;
+    border-color: #c2ccda;
+}
+
+
+/* PANELS */
+
+body[data-theme="light"] .side-panel {
+    color: #263244;
+    background: #ffffff;
+    border-color: #dce2ea;
+}
+
+body[data-theme="light"] .panel-heading,
+body[data-theme="light"] .panel-section,
+body[data-theme="light"] .section-heading,
+body[data-theme="light"] .editor-heading {
+    border-color: #e3e8ef;
+}
+
+body[data-theme="light"] .eyebrow,
+body[data-theme="light"] .section-caption,
+body[data-theme="light"] .hint,
+body[data-theme="light"] .panel-description,
+body[data-theme="light"] .editor-hint,
+body[data-theme="light"] .editor-note {
+    color: #687589;
+}
+
+
+/* CANVAS AREA */
+
+body[data-theme="light"] .canvas-area {
+    background: #edf1f6;
+    color: #263244;
+}
+
+body[data-theme="light"] .canvas-toolbar {
+    background: #ffffff;
+    border-color: #dce2ea;
+}
+
+body[data-theme="light"] .canvas-container {
+    background-color: #e8edf3;
+    background-image: radial-gradient(#cbd3df 0.8px, transparent 0.8px);
+}
+
+body[data-theme="light"] .canvas-frame {
+    background: #ffffff;
+    border-color: #cbd3df;
+    box-shadow: 0 5px 22px rgba(31, 45, 65, 0.12);
+}
+
+body[data-theme="light"] .canvas-hint {
+    color: #687589;
+}
+
+
+/* BUTTONS */
+
+body[data-theme="light"] .toolbar-button,
+body[data-theme="light"] .zoom-button,
+body[data-theme="light"] .secondary-button,
+body[data-theme="light"] .clear-selection-button {
+    color: #344256;
+    background: #f7f9fc;
+    border-color: #d5dde8;
+}
+
+body[data-theme="light"] .toolbar-button:hover,
+body[data-theme="light"] .zoom-button:hover,
+body[data-theme="light"] .secondary-button:hover,
+body[data-theme="light"] .clear-selection-button:hover {
+    background: #eaf0f7;
+}
+
+
+/* TOOL BUTTONS */
+
+body[data-theme="light"] .shape-btn {
+    color: #3c4a5e;
+    background: #f7f9fc;
+    border-color: #dce3ec;
+}
+
+body[data-theme="light"] .shape-btn:hover,
+body[data-theme="light"] .shape-btn.active {
+    color: #174b91;
+    background: #e8f1ff;
+    border-color: #9bbbe8;
+}
+
+
+/* INPUTS */
+
+body[data-theme="light"] input:not([type="checkbox"]):not([type="range"]):not([type="color"]),
+body[data-theme="light"] select,
+body[data-theme="light"] textarea {
+    color: #263244;
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+
+/* OBJECT LIST */
+
+body[data-theme="light"] .object-item,
+body[data-theme="light"] #objectList li {
+    border-color: #e1e7ef;
+}
+
+body[data-theme="light"] .object-select-button {
+    color: #344256;
+}
+
+body[data-theme="light"] .object-item.selected,
+body[data-theme="light"] #objectList li.selected {
+    background: #e8f1ff;
+}
+
+
+/* SELECTED OBJECT EDITOR */
+
+body[data-theme="light"] .selected-object-editor {
+    background: #f8fafc;
+    border-color: #dce3ec;
+}
+
+body[data-theme="light"] .toolbar-divider {
+    background: #d8e0ea;
+}
+
+body[data-theme="light"] .empty-state {
+    color: #78869a;
+}
+
+
+/* ==================================================
+   THEME TRANSITIONS
+================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+    body,
+    body .side-panel,
+    body .canvas-area,
+    body .canvas-toolbar,
+    body .workspace-rail {
+        transition:
+                background-color 160ms ease,
+                color 160ms ease,
+                border-color 160ms ease;
+    }
+}

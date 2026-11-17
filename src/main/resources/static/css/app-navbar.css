@@ -141,6 +141,101 @@
 
 
 /* ==================================================
+   NAVBAR ACTIONS
+================================================== */
+
+.navbar-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+
+/* ==================================================
+   THEME TOGGLE
+================================================== */
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 36px;
+    padding: 0 11px;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+    color: #dce5f2;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+            background 140ms ease,
+            border-color 140ms ease,
+            color 140ms ease,
+            transform 140ms ease;
+}
+
+.theme-toggle:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.13);
+    color: #fff;
+}
+
+.theme-toggle:active {
+    transform: scale(0.97);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid #8bb7ff;
+    outline-offset: 3px;
+}
+
+.theme-icon {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-icon-sun {
+    display: block;
+}
+
+.theme-icon-moon {
+    display: none;
+}
+
+/* In light theme, show the moon icon. */
+
+html[data-theme="light"] .theme-icon-sun,
+body[data-theme="light"] .theme-icon-sun {
+    display: none;
+}
+
+html[data-theme="light"] .theme-icon-moon,
+body[data-theme="light"] .theme-icon-moon {
+    display: block;
+}
+
+
+/* ==================================================
    USER MENU
 ================================================== */
 
@@ -376,6 +471,94 @@
 
 
 /* ==================================================
+   LIGHT THEME - NAVBAR
+================================================== */
+
+html[data-theme="light"] .site-navbar,
+body[data-theme="light"] .site-navbar {
+    border-bottom-color: #e1e6ee;
+    background: #fff;
+    color: #202b3c;
+}
+
+html[data-theme="light"] .site-brand,
+body[data-theme="light"] .site-brand {
+    color: #202b3c;
+}
+
+html[data-theme="light"] .site-brand:hover,
+body[data-theme="light"] .site-brand:hover {
+    color: #202b3c;
+}
+
+html[data-theme="light"] .site-brand-copy strong,
+body[data-theme="light"] .site-brand-copy strong {
+    color: #202b3c;
+}
+
+html[data-theme="light"] .site-brand-copy small,
+body[data-theme="light"] .site-brand-copy small {
+    color: #78869a;
+}
+
+html[data-theme="light"] .site-navigation a,
+body[data-theme="light"] .site-navigation a {
+    color: #647187;
+}
+
+html[data-theme="light"] .site-navigation a:hover,
+html[data-theme="light"] .site-navigation a.is-active,
+body[data-theme="light"] .site-navigation a:hover,
+body[data-theme="light"] .site-navigation a.is-active {
+    border-color: #e2e8f0;
+    background: #f0f4fa;
+    color: #24344d;
+}
+
+html[data-theme="light"] .theme-toggle,
+body[data-theme="light"] .theme-toggle {
+    border-color: #e0e5ed;
+    background: #f5f7fa;
+    color: #46546a;
+}
+
+html[data-theme="light"] .theme-toggle:hover,
+body[data-theme="light"] .theme-toggle:hover {
+    border-color: #cbd5e1;
+    background: #e9eef5;
+    color: #24344d;
+}
+
+html[data-theme="light"] .profile-menu-trigger,
+body[data-theme="light"] .profile-menu-trigger {
+    color: #263449;
+}
+
+html[data-theme="light"] .profile-menu-trigger:hover,
+html[data-theme="light"] .profile-menu-trigger[aria-expanded="true"],
+body[data-theme="light"] .profile-menu-trigger:hover,
+body[data-theme="light"] .profile-menu-trigger[aria-expanded="true"] {
+    border-color: #e0e5ed;
+    background: #f1f4f8;
+}
+
+html[data-theme="light"] .profile-trigger-copy strong,
+body[data-theme="light"] .profile-trigger-copy strong {
+    color: #263449;
+}
+
+html[data-theme="light"] .profile-trigger-copy small,
+body[data-theme="light"] .profile-trigger-copy small {
+    color: #8793a5;
+}
+
+html[data-theme="light"] .profile-chevron,
+body[data-theme="light"] .profile-chevron {
+    stroke: #78869a;
+}
+
+
+/* ==================================================
    RESPONSIVE
 ================================================== */
 
@@ -410,6 +593,21 @@
         flex-basis: 33px;
         width: 33px;
         height: 33px;
+    }
+
+    .navbar-actions {
+        gap: 6px;
+    }
+
+    .theme-toggle {
+        width: 35px;
+        min-width: 35px;
+        min-height: 35px;
+        padding: 0;
+    }
+
+    .theme-toggle-label {
+        display: none;
     }
 
     .profile-menu-trigger {
