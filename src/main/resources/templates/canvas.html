@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -30,29 +31,6 @@
 
 <main class="workspace">
 
-    <!-- LEFT WORKSPACE RAIL -->
-
-    <nav class="workspace-rail workspace-rail-left"
-         aria-label="Workspace navigation">
-
-        <button type="button"
-                id="toggleToolsPanel"
-                class="workspace-rail-button active"
-                aria-controls="toolsPanel"
-                aria-expanded="true"
-                aria-label="Hide tools"
-                title="Tools">
-
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m4 20 5-1 10-10-4-4L5 15l-1 5ZM13.5 6.5l4 4M3 4h6M3 8h3M3 12h3"></path>
-            </svg>
-
-            <span>Tools</span>
-        </button>
-
-    </nav>
-
-
     <!-- LEFT PANEL: TOOLS -->
 
     <aside id="toolsPanel"
@@ -80,8 +58,6 @@
                  role="group"
                  aria-label="Drawing tools">
 
-                <!-- SELECT -->
-
                 <button type="button"
                         class="shape-btn"
                         data-shape="select"
@@ -96,8 +72,6 @@
                     <span>Select</span>
                 </button>
 
-
-                <!-- PENCIL -->
 
                 <button type="button"
                         class="shape-btn"
@@ -115,8 +89,6 @@
                 </button>
 
 
-                <!-- ERASER -->
-
                 <button type="button"
                         class="shape-btn"
                         data-shape="eraser"
@@ -132,8 +104,6 @@
                     <span>Eraser</span>
                 </button>
 
-
-                <!-- BUCKET -->
 
                 <button type="button"
                         class="shape-btn"
@@ -151,8 +121,6 @@
                 </button>
 
 
-                <!-- CIRCLE -->
-
                 <button type="button"
                         class="shape-btn"
                         data-shape="circle"
@@ -167,8 +135,6 @@
                     <span>Circle</span>
                 </button>
 
-
-                <!-- SQUARE -->
 
                 <button type="button"
                         class="shape-btn"
@@ -185,8 +151,6 @@
                 </button>
 
 
-                <!-- TRIANGLE -->
-
                 <button type="button"
                         class="shape-btn"
                         data-shape="triangle"
@@ -201,8 +165,6 @@
                     <span>Triangle</span>
                 </button>
 
-
-                <!-- STAR -->
 
                 <button type="button"
                         class="shape-btn"
@@ -234,8 +196,6 @@
                 </button>
 
 
-                <!-- POLYGON -->
-
                 <button type="button"
                         class="shape-btn"
                         data-shape="polygon"
@@ -253,8 +213,6 @@
             </div>
 
 
-            <!-- POLYGON OPTIONS -->
-
             <div id="polygonOptions" class="sub-control" hidden>
                 <label for="polygonSides">Number of sides</label>
 
@@ -266,8 +224,6 @@
                        step="1">
             </div>
 
-
-            <!-- STAR OPTIONS -->
 
             <div id="starOptions" class="sub-control" hidden>
                 <label for="starPoints">Number of points</label>
@@ -464,12 +420,67 @@
     </aside>
 
 
+    <!-- RESIZE TOOLS PANEL -->
+
+    <div id="toolsResizeHandle"
+         class="panel-resize-handle"
+         role="separator"
+         aria-orientation="vertical"
+         aria-label="Resize tools panel"
+         aria-valuemin="220"
+         aria-valuemax="420"
+         aria-valuenow="286"
+         tabindex="0"
+         title="Drag to resize Tools">
+    </div>
+
+
     <!-- CENTRE: CANVAS -->
 
     <section class="canvas-area"
              aria-label="Canvas workspace">
 
         <div class="canvas-toolbar">
+
+            <!-- PANEL VISIBILITY -->
+
+            <div class="toolbar-group panel-toggle-actions"
+                 role="group"
+                 aria-label="Workspace panels">
+
+                <button type="button"
+                        id="toggleToolsPanel"
+                        class="panel-toggle-button active"
+                        aria-controls="toolsPanel"
+                        aria-expanded="true"
+                        aria-label="Hide tools panel"
+                        title="Show or hide Tools">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m4 20 5-1 10-10-4-4L5 15l-1 5ZM13.5 6.5l4 4M3 4h6M3 8h3M3 12h3"></path>
+                    </svg>
+
+                    <span>Tools</span>
+                </button>
+
+
+                <button type="button"
+                        id="toggleObjectsPanel"
+                        class="panel-toggle-button active"
+                        aria-controls="objectsPanel"
+                        aria-expanded="true"
+                        aria-label="Hide objects panel"
+                        title="Show or hide Objects">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 5h16v4H4zM4 11h16v8H4zM8 7h.01M8 15h.01M12 7h5M12 15h5"></path>
+                    </svg>
+
+                    <span>Objects</span>
+                </button>
+
+            </div>
+
 
             <!-- UNDO / REDO -->
 
@@ -583,7 +594,22 @@
     </section>
 
 
-    <!-- RIGHT: OBJECTS AND PROPERTIES -->
+    <!-- RESIZE OBJECTS PANEL -->
+
+    <div id="objectsResizeHandle"
+         class="panel-resize-handle"
+         role="separator"
+         aria-orientation="vertical"
+         aria-label="Resize objects panel"
+         aria-valuemin="220"
+         aria-valuemax="420"
+         aria-valuenow="310"
+         tabindex="0"
+         title="Drag to resize Objects">
+    </div>
+
+
+    <!-- RIGHT PANEL: OBJECTS AND PROPERTIES -->
 
     <aside id="objectsPanel"
            class="side-panel object-history"
@@ -654,36 +680,14 @@
 
     </aside>
 
-
-    <!-- RIGHT WORKSPACE RAIL -->
-
-    <nav class="workspace-rail workspace-rail-right"
-         aria-label="Workspace navigation">
-
-        <button type="button"
-                id="toggleObjectsPanel"
-                class="workspace-rail-button active"
-                aria-controls="objectsPanel"
-                aria-expanded="true"
-                aria-label="Hide objects"
-                title="Objects and properties">
-
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 5h16v4H4zM4 11h16v8H4zM8 7h.01M8 15h.01M12 7h5M12 15h5"></path>
-            </svg>
-
-            <span>Objects</span>
-        </button>
-
-    </nav>
-
 </main>
 
 
 <script th:src="@{/js/app-navbar.js(v=${#dates.createNow().time})}" defer></script>
 
-<!-- This is the entry point; its imports load the modules inside /js/canvas/ -->
-<script type="module" th:src="@{/js/canvas.js(v=${#dates.createNow().time})}"></script>
+<script type="module"
+        th:src="@{/js/canvas.js(v=${#dates.createNow().time})}">
+</script>
 
 </body>
 </html>

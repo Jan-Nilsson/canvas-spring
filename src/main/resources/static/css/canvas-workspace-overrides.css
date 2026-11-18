@@ -1,148 +1,372 @@
+
 /* ==================================================
-   WORKSPACE SIDE RAILS
-   Load this file after canvas.css.
+   CANVAS WORKSPACE
+   Docked, collapsible and resizable side panels.
+================================================== */
+
+:root {
+    --tools-panel-width: 286px;
+    --objects-panel-width: 310px;
+    --workspace-panel-min: 220px;
+    --workspace-panel-max: 420px;
+    --workspace-canvas-min: 280px;
+}
+
+/* ==================================================
+   WORKSPACE LAYOUT
 ================================================== */
 
 .workspace {
     display: flex;
     align-items: stretch;
     min-width: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
-.workspace-rail {
+.workspace > .side-panel {
     display: flex;
-    flex: 0 0 48px;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 48px;
-    min-width: 48px;
-    padding: 10px 5px;
-    background: #17243a;
-    border-color: rgba(255, 255, 255, 0.08);
-    z-index: 2;
-}
-
-.workspace-rail-left {
-    border-right: 1px solid rgba(255, 255, 255, 0.09);
-}
-
-.workspace-rail-right {
-    border-left: 1px solid rgba(255, 255, 255, 0.09);
-}
-
-.workspace-rail-button {
-    display: flex;
-    width: 38px;
-    min-height: 58px;
     flex: 0 0 auto;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 7px 2px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: #aebbd0;
-    cursor: pointer;
-    font: inherit;
-    font-size: 9px;
-    font-weight: 650;
-    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+    min-width: var(--workspace-panel-min);
+    max-width: min(var(--workspace-panel-max), 38vw);
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
 }
 
-.workspace-rail-button:hover,
-.workspace-rail-button.active {
-    border-color: rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+.workspace > .tools-panel {
+    width: var(--tools-panel-width);
+    flex-basis: var(--tools-panel-width);
+    border-right: 1px solid var(--border);
 }
 
-.workspace-rail-button svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.workspace > .object-history {
+    width: var(--objects-panel-width);
+    flex-basis: var(--objects-panel-width);
+    border-left: 1px solid var(--border);
 }
 
 .workspace > .side-panel[hidden] {
     display: none !important;
 }
 
-.workspace > .side-panel {
-    flex: 0 0 auto;
-    min-width: 0;
-    max-width: min(360px, 34vw);
+/* ==================================================
+   RESIZE HANDLES
+================================================== */
+
+.panel-resize-handle {
+    position: relative;
+    z-index: 3;
+    display: block;
+    flex: 0 0 8px;
+    width: 8px;
+    min-width: 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: col-resize;
+    touch-action: none;
+    user-select: none;
 }
+
+.panel-resize-handle::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3px;
+    width: 2px;
+    border-radius: 3px;
+    background: transparent;
+    content: "";
+    transition: background 120ms ease;
+}
+
+.panel-resize-handle:hover::before,
+.panel-resize-handle:focus-visible::before {
+    background: #78a0e5;
+}
+
+.panel-resize-handle:focus-visible {
+    outline: none;
+}
+
+.panel-resize-handle[hidden] {
+    display: none !important;
+}
+
+body.panel-resizing,
+body.panel-resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+}
+
+/* ==================================================
+   CANVAS AREA
+================================================== */
 
 .workspace > .canvas-area {
-    flex: 1 1 auto;
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    min-width: var(--workspace-canvas-min);
+    min-height: 0;
+}
+
+/* ==================================================
+   TOP TOOLBAR
+================================================== */
+
+.canvas-toolbar {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px 12px;
+    min-width: 0;
+    min-height: 52px;
+    height: auto;
+    padding: 8px 12px;
+}
+
+.canvas-toolbar > .toolbar-group {
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
     min-width: 0;
 }
 
-/* Give the Bucket tool the same visual treatment as the other tools. */
-
-.shape-btn[data-shape="bucket"] svg {
-    fill: none;
+.panel-toggle-actions {
+    flex: 0 0 auto !important;
 }
 
-.export-button {
+.panel-toggle-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 32px;
+    padding: 6px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    background: #fff;
+    color: #536176;
+    font-size: 11px;
+    font-weight: 650;
+    white-space: nowrap;
+    transition:
+            background 120ms ease,
+            border-color 120ms ease,
+            color 120ms ease;
+}
+
+.panel-toggle-button:hover {
+    border-color: #b9cbed;
+    background: #f4f7fc;
+    color: var(--primary);
+}
+
+.panel-toggle-button.active {
+    border-color: #b8ccef;
+    background: #edf3ff;
+    color: #285fbe;
+}
+
+.panel-toggle-button svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.canvas-toolbar .history-actions {
+    flex: 0 1 auto;
+}
+
+.canvas-toolbar .zoom-controls {
+    flex: 0 1 auto;
+    margin-left: auto;
+}
+
+.canvas-toolbar .toolbar-button,
+.canvas-toolbar .zoom-button {
+    flex: 0 0 auto;
     white-space: nowrap;
 }
 
+/* ==================================================
+   OBJECTS LIST AND SELECTED OBJECT PROPERTIES
+
+   The object list has its own scroll area.
+   The property editor stays below it in normal flow.
+================================================== */
+
+.workspace > .object-history {
+    gap: 14px;
+    padding-bottom: 20px;
+}
+
+.object-history .panel-description {
+    margin-top: -5px;
+}
+
+.object-history #objectList {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    min-height: 0;
+    max-height: clamp(100px, 30vh, 260px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 3px;
+}
+
+.object-history .empty-state {
+    flex: 0 0 auto;
+}
+
+.object-history .selected-object-editor {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 0;
+    overflow: visible;
+}
+
+.object-history .selected-object-fields,
+.object-history .editor-field,
+.object-history .editor-position-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.object-history .editor-position-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.object-history .editor-field input[type="number"],
+.object-history .editor-field input[type="range"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.object-history .editor-field input[type="color"] {
+    max-width: 100%;
+}
+
+.object-history .editor-heading {
+    min-width: 0;
+}
+
+.object-history .editor-heading > div {
+    min-width: 0;
+}
+
+.object-history .editor-heading h3 {
+    overflow-wrap: anywhere;
+}
 
 /* ==================================================
-   RESPONSIVE SIDE RAILS
+   RESPONSIVE
 ================================================== */
 
 @media (max-width: 820px) {
-    .workspace-rail {
-        flex-basis: 42px;
-        width: 42px;
-        min-width: 42px;
-        padding-left: 3px;
-        padding-right: 3px;
+    .workspace {
+        flex-direction: column;
+        align-items: stretch;
+        overflow: visible;
     }
 
-    .workspace-rail-button {
-        width: 36px;
-        min-height: 54px;
+    .workspace > .panel-resize-handle {
+        display: none !important;
     }
 
     .workspace > .side-panel {
-        width: min(310px, calc(100vw - 90px));
-        max-width: min(310px, calc(100vw - 90px));
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        max-height: none;
+        overflow: visible;
+        scrollbar-gutter: auto;
+    }
+
+    .workspace > .tools-panel {
+        order: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .workspace > .canvas-area {
+        order: 1;
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+        min-height: 58vh;
+    }
+
+    .workspace > .object-history {
+        order: 2;
+        border-top: 1px solid var(--border);
+        border-left: 0;
+    }
+
+    .canvas-toolbar {
+        justify-content: flex-start;
+    }
+
+    .canvas-toolbar .zoom-controls {
+        margin-left: 0;
+    }
+
+    .object-history #objectList {
+        max-height: 240px;
     }
 }
 
-@media (max-width: 520px) {
-    .workspace-rail {
-        flex-basis: 38px;
-        width: 38px;
-        min-width: 38px;
-        padding-left: 1px;
-        padding-right: 1px;
+@media (max-width: 560px) {
+    .canvas-toolbar {
+        gap: 7px;
+        padding: 8px;
     }
 
-    .workspace-rail-button {
-        width: 34px;
-        font-size: 8px;
+    .panel-toggle-button {
+        min-height: 30px;
+        padding: 5px 8px;
+        font-size: 10px;
     }
 
-    .workspace > .side-panel {
-        width: min(280px, calc(100vw - 80px));
-        max-width: min(280px, calc(100vw - 80px));
+    .canvas-toolbar .toolbar-group {
+        gap: 3px;
+    }
+
+    .canvas-toolbar .toolbar-button {
+        padding: 5px 6px;
+        font-size: 10px;
     }
 }
-
 
 /* ==================================================
    LIGHT / DARK THEME
-   The theme is controlled by the shared navbar.
 ================================================== */
 
 body[data-theme="dark"] {
@@ -157,39 +381,17 @@ body[data-theme="light"] {
     color: #202938;
 }
 
-
-/* LEFT AND RIGHT RAILS */
-
-body[data-theme="light"] .workspace-rail {
-    background: #e7ebf1;
-    border-color: #d5dce6;
-}
-
-body[data-theme="light"] .workspace-rail-button {
-    color: #536174;
-}
-
-body[data-theme="light"] .workspace-rail-button:hover,
-body[data-theme="light"] .workspace-rail-button.active {
-    color: #17243a;
-    background: #d5deea;
-    border-color: #c2ccda;
-}
-
-
-/* PANELS */
+/* Light theme panels */
 
 body[data-theme="light"] .side-panel {
     color: #263244;
-    background: #ffffff;
+    background: #fff;
     border-color: #dce2ea;
 }
 
-body[data-theme="light"] .panel-heading,
-body[data-theme="light"] .panel-section,
-body[data-theme="light"] .section-heading,
-body[data-theme="light"] .editor-heading {
-    border-color: #e3e8ef;
+body[data-theme="light"] .panel-heading h2,
+body[data-theme="light"] .editor-heading h3 {
+    color: #263244;
 }
 
 body[data-theme="light"] .eyebrow,
@@ -201,8 +403,32 @@ body[data-theme="light"] .editor-note {
     color: #687589;
 }
 
+/* Light theme resize handles */
 
-/* CANVAS AREA */
+body[data-theme="light"] .panel-resize-handle:hover::before,
+body[data-theme="light"] .panel-resize-handle:focus-visible::before {
+    background: #4778d7;
+}
+
+/* Light theme toggle buttons */
+
+body[data-theme="light"] .panel-toggle-button {
+    color: #344256;
+    background: #f7f9fc;
+    border-color: #d5dde8;
+}
+
+body[data-theme="light"] .panel-toggle-button:hover {
+    background: #eaf0f7;
+}
+
+body[data-theme="light"] .panel-toggle-button.active {
+    color: #174b91;
+    background: #e8f1ff;
+    border-color: #9bbbe8;
+}
+
+/* Light theme canvas */
 
 body[data-theme="light"] .canvas-area {
     background: #edf1f6;
@@ -210,7 +436,7 @@ body[data-theme="light"] .canvas-area {
 }
 
 body[data-theme="light"] .canvas-toolbar {
-    background: #ffffff;
+    background: #fff;
     border-color: #dce2ea;
 }
 
@@ -220,7 +446,7 @@ body[data-theme="light"] .canvas-container {
 }
 
 body[data-theme="light"] .canvas-frame {
-    background: #ffffff;
+    background: #fff;
     border-color: #cbd3df;
     box-shadow: 0 5px 22px rgba(31, 45, 65, 0.12);
 }
@@ -229,8 +455,7 @@ body[data-theme="light"] .canvas-hint {
     color: #687589;
 }
 
-
-/* BUTTONS */
+/* Light theme controls */
 
 body[data-theme="light"] .toolbar-button,
 body[data-theme="light"] .zoom-button,
@@ -248,8 +473,7 @@ body[data-theme="light"] .clear-selection-button:hover {
     background: #eaf0f7;
 }
 
-
-/* TOOL BUTTONS */
+/* Light theme drawing tools */
 
 body[data-theme="light"] .shape-btn {
     color: #3c4a5e;
@@ -264,19 +488,17 @@ body[data-theme="light"] .shape-btn.active {
     border-color: #9bbbe8;
 }
 
-
-/* INPUTS */
+/* Light theme inputs */
 
 body[data-theme="light"] input:not([type="checkbox"]):not([type="range"]):not([type="color"]),
 body[data-theme="light"] select,
 body[data-theme="light"] textarea {
     color: #263244;
-    background: #ffffff;
+    background: #fff;
     border-color: #cbd5e1;
 }
 
-
-/* OBJECT LIST */
+/* Light theme object list */
 
 body[data-theme="light"] .object-item,
 body[data-theme="light"] #objectList li {
@@ -292,9 +514,6 @@ body[data-theme="light"] #objectList li.selected {
     background: #e8f1ff;
 }
 
-
-/* SELECTED OBJECT EDITOR */
-
 body[data-theme="light"] .selected-object-editor {
     background: #f8fafc;
     border-color: #dce3ec;
@@ -308,7 +527,6 @@ body[data-theme="light"] .empty-state {
     color: #78869a;
 }
 
-
 /* ==================================================
    THEME TRANSITIONS
 ================================================== */
@@ -317,8 +535,7 @@ body[data-theme="light"] .empty-state {
     body,
     body .side-panel,
     body .canvas-area,
-    body .canvas-toolbar,
-    body .workspace-rail {
+    body .canvas-toolbar {
         transition:
                 background-color 160ms ease,
                 color 160ms ease,
