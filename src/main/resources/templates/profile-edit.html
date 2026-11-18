@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit profile</title>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/app-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+</head>
+
+<body class="profile-edit-page">
+
+<div th:replace="~{fragments/navbar :: navbar('profile')}"></div>
+
+<main class="profile-edit-main">
+
+    <header class="profile-edit-header">
+
+        <a th:href="@{/u/{username}(username=${username})}"
+           class="profile-back-link">
+            &larr; Back to profile
+        </a>
+
+        <h1>Edit profile</h1>
+
+        <p>
+            Customize how other people see your profile.
+        </p>
+
+    </header>
+
+    <p th:if="${profileSuccess != null}"
+       class="profile-edit-success"
+       role="status"
+       aria-live="polite"
+       th:text="${profileSuccess}">
+    </p>
+
+    <form class="profile-edit-form"
+          th:action="@{/profile/edit}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <input type="hidden"
+               th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}">
+
+        <section class="profile-edit-section">
+
+            <h2>Public information</h2>
+
+            <div class="profile-edit-avatar">
+
+                <div class="profile-avatar-preview">
+
+                    <img th:if="${profile.profileImageUrl != null
+                                 and !#strings.isEmpty(profile.profileImageUrl)}"
+                         th:src="${profile.profileImageUrl}"
+                         alt="Profile picture">
+
+                    <span th:unless="${profile.profileImageUrl != null
+                                      and !#strings.isEmpty(profile.profileImageUrl)}">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.5">
+
+                            <circle cx="12" cy="8" r="4"></circle>
+
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+
+                        </svg>
+
+                    </span>
+
+                </div>
+
+                <div class="profile-avatar-info">
+
+                    <strong>Profile picture</strong>
+
+                    <p>
+                        Choose a picture that represents you.
+                    </p>
+
+                    <label for="profileImage"
+                           class="profile-upload-button">
+                        Change picture
+                    </label>
+
+                    <input type="file"
+                           id="profileImage"
+                           name="profileImage"
+                           accept="image/png,image/jpeg,image/webp">
+
+                    <small class="profile-image-help">
+                        JPG, PNG or WebP. Maximum 5 MB.
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="profile-form-field">
+
+                <label for="displayName">
+                    Display name
+                </label>
+
+                <input type="text"
+                       id="displayName"
+                       name="displayName"
+                       maxlength="100"
+                       placeholder="Your public name"
+                       th:value="${submittedDisplayName != null
+                                  ? submittedDisplayName
+                                  : profile.displayName}">
+
+                <small>
+                    This name is displayed on your public profile.
+                </small>
+
+            </div>
+
+            <div class="profile-form-field">
+
+                <label for="bio">
+                    Biography
+                </label>
+
+                <textarea id="bio"
+                          name="bio"
+                          maxlength="500"
+                          rows="5"
+                          placeholder="Tell people a little about yourself..."
+                          th:text="${submittedBio != null
+                                    ? submittedBio
+                                    : profile.bio}"></textarea>
+
+                <small class="profile-bio-counter"
+                       id="bioCounter">
+                    0/500 characters
+                </small>
+
+            </div>
+
+        </section>
+
+        <section class="profile-edit-section">
+
+            <h2>Privacy</h2>
+
+            <label class="profile-privacy-option"
+                   for="showFullName">
+
+                <input type="checkbox"
+                       id="showFullName"
+                       name="showFullName"
+                       value="true"
+                       th:checked="${submittedShowFullName != null
+                                    ? submittedShowFullName
+                                    : profile.showFullName}">
+
+                <span>
+
+                    <strong>Show my full name</strong>
+
+                    <small>
+                        Allow your registration name to appear
+                        on your public profile instead of your
+                        display name.
+                    </small>
+
+                </span>
+
+            </label>
+
+        </section>
+
+        <p th:if="${profileError != null}"
+           class="profile-edit-error"
+           role="alert"
+           th:text="${profileError}">
+        </p>
+
+        <div class="profile-edit-actions">
+
+            <a th:href="@{/u/{username}(username=${username})}"
+               class="profile-cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="profile-save-button">
+                Save changes
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+<script th:src="@{/js/app-navbar.js}"></script>
+<script th:src="@{/js/profile-edit.js}"></script>
+
+</body>
+</html>

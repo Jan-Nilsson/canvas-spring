@@ -1,4 +1,3 @@
-
 package com.canvas.config;
 
 import com.canvas.interceptor.AuthInterceptor;
@@ -11,14 +10,18 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/login",
                         "/register",
+                        "/u/**",
+                        "/profile/image/**",
                         "/css/**",
                         "/js/**",
                         "/images/**",
+                        "/favicon.ico",
                         "/error"
                 );
     }

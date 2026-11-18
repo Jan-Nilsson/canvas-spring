@@ -1,8 +1,10 @@
 <header th:fragment="navbar(activePage)" class="site-navbar">
 
+    <!-- BRAND -->
+
     <a class="site-brand"
-       th:href="@{/drawings(tab='all')}"
-       aria-label="Drawings App home">
+       th:href="@{/canvas}"
+       aria-label="Canvas home">
 
         <span class="site-brand-icon">
             <img th:src="@{/favicon.ico}" alt="">
@@ -12,10 +14,19 @@
             <strong>Drawings</strong>
             <small>Canvas Studio</small>
         </span>
+
     </a>
 
 
+    <!-- NAVIGATION -->
+
     <nav class="site-navigation" aria-label="Main navigation">
+
+        <a th:href="@{/canvas}"
+           th:classappend="${activePage == 'canvas'} ? ' is-active' : ''"
+           th:attr="aria-current=${activePage == 'canvas'} ? 'page' : null">
+            Canvas
+        </a>
 
         <a th:href="@{/drawings(tab='all')}"
            th:classappend="${activePage == 'explore'} ? ' is-active' : ''"
@@ -32,7 +43,11 @@
     </nav>
 
 
+    <!-- ACTIONS -->
+
     <div class="navbar-actions">
+
+        <!-- THEME -->
 
         <button type="button"
                 id="themeToggleBtn"
@@ -61,55 +76,48 @@
             </svg>
 
             <span class="theme-toggle-label">Theme</span>
+
         </button>
 
+
+        <!-- PROFILE MENU -->
 
         <div class="navbar-account" data-profile-menu>
 
             <button type="button"
                     id="profileMenuButton"
                     class="profile-menu-trigger"
+                    aria-label="Open account menu"
+                    title="Account"
                     aria-haspopup="true"
                     aria-expanded="false"
                     aria-controls="profileMenu">
 
                 <span class="navbar-avatar">
 
-                    <img th:if="${currentUser != null and !#strings.isEmpty(currentUser.profileImageUrl)}"
+                    <img th:if="${currentUser != null
+                                 and !#strings.isEmpty(currentUser.profileImageUrl)}"
                          th:src="${currentUser.profileImageUrl}"
                          alt=""
                          class="navbar-avatar-image">
 
-                    <svg th:unless="${currentUser != null and !#strings.isEmpty(currentUser.profileImageUrl)}"
+                    <svg th:unless="${currentUser != null
+                                     and !#strings.isEmpty(currentUser.profileImageUrl)}"
                          viewBox="0 0 24 24"
                          aria-hidden="true">
+
                         <circle cx="12" cy="8" r="3.5"></circle>
+
                         <path d="M4.8 20c.7-3.6 3.3-5.4 7.2-5.4s6.5 1.8 7.2 5.4"></path>
+
                     </svg>
 
                 </span>
 
-
-                <span class="profile-trigger-copy">
-                    <strong th:text="${currentUser != null and !#strings.isEmpty(currentUser.displayName) ? currentUser.displayName : (currentUser != null ? currentUser.username : 'Account')}">
-                        Account
-                    </strong>
-
-                    <small th:if="${currentUser != null}"
-                           th:text="${'@' + currentUser.username}">
-                        @username
-                    </small>
-                </span>
-
-
-                <svg class="profile-chevron"
-                     viewBox="0 0 20 20"
-                     aria-hidden="true">
-                    <path d="m5 7.5 5 5 5-5"></path>
-                </svg>
-
             </button>
 
+
+            <!-- DROPDOWN -->
 
             <div id="profileMenu"
                  class="profile-dropdown"
@@ -119,7 +127,9 @@
                 <div class="profile-dropdown-heading">
 
                     <span class="dropdown-user-name"
-                          th:text="${currentUser != null and !#strings.isEmpty(currentUser.displayName) ? currentUser.displayName : (currentUser != null ? currentUser.username : 'Account')}">
+                          th:text="${currentUser != null
+                                    ? currentUser.displayName
+                                    : 'Account'}">
                         Account
                     </span>
 
@@ -134,7 +144,7 @@
 
                 <a role="menuitem"
                    th:if="${currentUser != null}"
-                   th:href="@{/profile/{username}(username=${currentUser.username})}">
+                   th:href="@{/u/{username}(username=${currentUser.username})}">
 
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="12" cy="8" r="3.5"></circle>
@@ -142,10 +152,12 @@
                     </svg>
 
                     View profile
+
                 </a>
 
 
-                <a role="menuitem" th:href="@{/profile/edit}">
+                <a role="menuitem"
+                   th:href="@{/profile/edit}">
 
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M12 20h9"></path>
@@ -153,6 +165,7 @@
                     </svg>
 
                     Edit profile
+
                 </a>
 
 
@@ -172,6 +185,7 @@
                         </svg>
 
                         Log out
+
                     </button>
 
                 </form>

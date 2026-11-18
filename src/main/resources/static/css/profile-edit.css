@@ -1,0 +1,387 @@
+
+/* =========================================
+   PROFILE EDIT PAGE
+========================================= */
+
+.profile-edit-page {
+    min-height: 100vh;
+    background-color: #f5f6fa;
+    color: #20232a;
+}
+
+.profile-edit-main {
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px 60px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.profile-edit-header {
+    margin-bottom: 30px;
+}
+
+.profile-back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #687080;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.profile-back-link:hover {
+    color: #6255e7;
+}
+
+.profile-edit-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.profile-edit-header p {
+    margin-top: 10px;
+    color: #687080;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.profile-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.profile-edit-section {
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.profile-edit-section h2 {
+    margin: 0 0 25px;
+    font-size: 19px;
+    font-weight: 650;
+}
+
+
+/* =========================================
+   PROFILE IMAGE
+========================================= */
+
+.profile-edit-avatar {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar-preview {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 3px solid #e5e7eb;
+    border-radius: 50%;
+    background-color: #eceef3;
+}
+
+.profile-avatar-preview img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 50%;
+}
+
+.profile-avatar-preview svg {
+    width: 48px;
+    height: 48px;
+    color: #687080;
+}
+
+.profile-avatar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-avatar-info strong {
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.profile-avatar-info p {
+    margin: 0 0 12px;
+    color: #687080;
+    font-size: 13px;
+}
+
+.profile-upload-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+    border: 1px solid #d8dce5;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #20232a;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.profile-upload-button:hover {
+    border-color: #6255e7;
+    background-color: #f5f4ff;
+}
+
+#profileImage {
+    display: none;
+}
+
+.profile-image-help {
+    margin-top: 8px;
+    color: #687080;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   FORM FIELDS
+========================================= */
+
+.profile-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 22px;
+}
+
+.profile-form-field:last-child {
+    margin-bottom: 0;
+}
+
+.profile-form-field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-form-field input,
+.profile-form-field textarea {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d8dce5;
+    border-radius: 9px;
+    background-color: #ffffff;
+    color: #20232a;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.profile-form-field input:focus,
+.profile-form-field textarea:focus {
+    border-color: #6255e7;
+    box-shadow: 0 0 0 3px rgba(98, 85, 231, 0.12);
+}
+
+.profile-form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.profile-form-field small {
+    color: #687080;
+    font-size: 12px;
+}
+
+.profile-bio-counter {
+    align-self: flex-end;
+}
+
+.profile-bio-counter.is-limit {
+    color: #dc4545;
+}
+
+
+/* =========================================
+   PRIVACY
+========================================= */
+
+.profile-privacy-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    cursor: pointer;
+}
+
+.profile-privacy-option input {
+    width: 17px;
+    height: 17px;
+    margin: 3px 0 0;
+    accent-color: #6255e7;
+    cursor: pointer;
+}
+
+.profile-privacy-option span {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-privacy-option strong {
+    font-size: 14px;
+}
+
+.profile-privacy-option small {
+    max-width: 600px;
+    color: #687080;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.profile-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.profile-cancel-button,
+.profile-save-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 20px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.profile-cancel-button {
+    border: 1px solid #d8dce5;
+    background-color: #ffffff;
+    color: #20232a;
+}
+
+.profile-cancel-button:hover {
+    background-color: #f0f1f6;
+}
+
+.profile-save-button {
+    border: none;
+    background-color: #6255e7;
+    color: #ffffff;
+}
+
+.profile-save-button:hover {
+    background-color: #5144d4;
+}
+
+.profile-save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+.profile-edit-error {
+    margin: 0;
+    padding: 12px 15px;
+    border: 1px solid #f1b8b8;
+    border-radius: 9px;
+    background-color: #fff0f0;
+    color: #b52d2d;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   SUCCESS MESSAGE
+========================================= */
+
+.profile-edit-success {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border: 1px solid #83c99a;
+    border-radius: 8px;
+    background-color: #eaf8ee;
+    color: #236b38;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .profile-edit-main {
+        margin-top: 30px;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .profile-edit-header h1 {
+        font-size: 26px;
+    }
+
+    .profile-edit-section {
+        padding: 20px;
+    }
+
+    .profile-edit-avatar {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .profile-avatar-preview {
+        width: 76px;
+        height: 76px;
+    }
+
+    .profile-edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .profile-cancel-button,
+    .profile-save-button {
+        width: 100%;
+    }
+}

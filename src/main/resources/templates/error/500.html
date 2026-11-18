@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Server error | Canvas</title>
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+
+<main class="error-page">
+    <section class="error-content">
+
+        <a th:href="@{/canvas}" class="error-logo">Canvas</a>
+
+        <span class="error-code">500</span>
+
+        <h1>Something went wrong on our end.</h1>
+
+        <p>
+            An unexpected error occurred while processing your request.
+            Please try again later.
+        </p>
+
+        <a th:href="@{/canvas}" class="error-button">
+            Back to Canvas
+        </a>
+
+    </section>
+</main>
+
+</body>
+</html>

@@ -71,35 +71,27 @@ public class UserService {
             );
         }
 
-        if (!usernameValidator.isValid(username)) {
+        if (usernameValidator.containsBannedWord(username)) {
             errors.put(
-                    "invalidUsername",
-                    "Username format is invalid"
+                    "bannedWordMessage",
+                    "Username '" + username
+                            + "' contains inappropriate language"
             );
-        } else {
+        }
 
-            if (usernameValidator.containsBannedWord(username)) {
-                errors.put(
-                        "bannedWordMessage",
-                        "Username '" + username
-                                + "' contains inappropriate language"
-                );
-            }
+        if (usernameValidator.isReserved(username)) {
+            errors.put(
+                    "reservedUsernameMessage",
+                    "Username '" + username
+                            + "' is reserved for internal usage"
+            );
+        }
 
-            if (usernameValidator.isReserved(username)) {
-                errors.put(
-                        "reservedUsernameMessage",
-                        "Username '" + username
-                                + "' is reserved for internal usage"
-                );
-            }
-
-            if (userRepository.existsByUsername(username)) {
-                errors.put(
-                        "usernameAlreadyExists",
-                        "Username '" + username + "' is already taken"
-                );
-            }
+        if (userRepository.existsByUsername(username)) {
+            errors.put(
+                    "usernameAlreadyExists",
+                    "Username '" + username + "' is already taken"
+            );
         }
 
         if (!passwordValidator.isValid(password)) {

@@ -1,0 +1,139 @@
+/* =========================================
+   ERROR PAGE
+========================================= */
+
+.error-page {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 24px;
+
+    background-color: #f8f9fb;
+    color: #171717;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.error-content {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.error-logo {
+    display: inline-block;
+
+    margin-bottom: 64px;
+
+    color: #171717;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+
+    text-decoration: none;
+}
+
+
+/* =========================================
+   ERROR CODE
+========================================= */
+
+.error-code {
+    display: block;
+
+    margin-bottom: 20px;
+
+    color: #171717;
+    font-size: clamp(100px, 20vw, 160px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -10px;
+}
+
+
+/* =========================================
+   ERROR CONTENT
+========================================= */
+
+.error-content h1 {
+    margin-bottom: 16px;
+
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+
+.error-content p {
+    max-width: 440px;
+    margin: 0 auto 32px;
+
+    color: #777;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   ERROR BUTTON
+========================================= */
+
+.error-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 48px;
+    padding: 0 28px;
+
+    border-radius: 8px;
+    background-color: #171717;
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.error-button:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.error-button:focus-visible,
+.error-logo:focus-visible {
+    outline: 3px solid #777;
+    outline-offset: 4px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .error-logo {
+        margin-bottom: 48px;
+    }
+
+    .error-code {
+        letter-spacing: -6px;
+    }
+
+    .error-content p {
+        font-size: 14px;
+    }
+}
